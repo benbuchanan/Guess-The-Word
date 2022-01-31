@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    
     enum Status: String {
         case normal = "normal"
         case correct = "correct"
@@ -35,13 +37,14 @@ struct ContentView: View {
                 ForEach(0...5, id: \.self) { i in
                     HStack(spacing: 5) {
                         ForEach(0...4, id: \.self) { j in
+                            let guessTile = self.guesses[i][j]
                             ZStack {
                                 Rectangle()
-                                    .fill(self.guesses[i][j].color)
-                                    .border(Color.black, width: 2)
+                                    .fill(guessTile.color)
+                                    .border(guessTile.status == Status.normal ? .gray : guessTile.color, width: 1.5)
                                     .frame(width: 65, height: 65)
-                                Text(self.guesses[i][j].letter)
-                                    .font(.title)
+                                Text(guessTile.letter)
+                                    .font(.title).fontWeight(.bold)
                             }
                         }
                     }
@@ -71,24 +74,28 @@ struct ContentView: View {
                         Button(action: submitGuess) {
                             ZStack {
                                 Rectangle()
-                                    .foregroundColor(.black.opacity(0.2))
+                                    .foregroundColor(colorScheme == .dark ? .gray : .black.opacity(0.2))
                                     .frame(width: 55, height: 50)
                                     .cornerRadius(5)
                                 Text("Enter")
                             }
                         }
+                        .foregroundColor(colorScheme == .dark ? .white : .black)
                         ForEach(alphabet[19...25], id: \.self) { letter in
                             KeyboardLetter(letter: letter).onTapGesture {
                                 inputLetter(letter: letter)
                             }
                         }
-                        ZStack {
-                            Rectangle()
-                                .foregroundColor(.black.opacity(0.2))
-                                .frame(width: 55, height: 50)
-                                .cornerRadius(5)
-                            Text("Del")
+                        Button(action: deleteLetter) {
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(colorScheme == .dark ? .gray : .black.opacity(0.2))
+                                    .frame(width: 55, height: 50)
+                                    .cornerRadius(5)
+                                Text("Del")
+                            }
                         }
+                        .foregroundColor(colorScheme == .dark ? .white : .black)
                     }
                 }
             }
@@ -147,6 +154,14 @@ struct ContentView: View {
         }
     }
     
+    func deleteLetter() {
+        for i in 0..<self.guesses[self.currentGuess].count {
+            if self.guesses[self.currentGuess][i].letter == "" && i > 0 {
+                self.guesses[self.currentGuess][i-1].letter = ""
+            }
+        }
+    }
+    
     func isValidGuess(arr: [Tile]) -> Bool {
         var hasEmptyString = false
         for tile in arr {
@@ -163,7 +178,7 @@ struct ContentView: View {
         var color: Color {
             switch status {
             case Status.normal:
-                return Color.gray.opacity(0.3)
+                return Color.black.opacity(0)
             case Status.correct:
                 return Color.green
             case Status.incorrectPlacement:
@@ -176,15 +191,19 @@ struct ContentView: View {
 }
 
 struct KeyboardLetter: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    
     var letter: String
     
     var body: some View {
         ZStack {
             Rectangle()
-                .foregroundColor(.black.opacity(0.2)) // Change this with guesses
+                .foregroundColor(colorScheme == .dark ? .gray : .black.opacity(0.2)) // Change this with guesses
                 .frame(width: 30, height: 50)
                 .cornerRadius(5)
             Text(letter)
+                .foregroundColor(colorScheme == .dark ? .white : .black)
         }
     }
 }
