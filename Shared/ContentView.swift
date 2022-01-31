@@ -16,7 +16,7 @@ struct ContentView: View {
         case incorrect = "incorrect"
     }
     
-    var testWord: [String] = ["r", "a", "n", "t", "s"]
+    var testWord: [String] = ["r", "a", "r", "e", "s"]
     // Increment on 'Enter'
     @State var currentGuess: Int = 0
     @State var guesses: [[Tile]] = Array(repeating: Array(repeating: Tile(letter: "", status: Status.normal), count: 5), count: 6)
@@ -36,11 +36,12 @@ struct ContentView: View {
                     HStack(spacing: 5) {
                         ForEach(0...4, id: \.self) { j in
                             ZStack {
-                                Text(self.guesses[i][j].letter)
                                 Rectangle()
-                                    .foregroundColor(.black.opacity(0))
+                                    .fill(self.guesses[i][j].color)
                                     .border(Color.black, width: 2)
                                     .frame(width: 65, height: 65)
+                                Text(self.guesses[i][j].letter)
+                                    .font(.title)
                             }
                         }
                     }
@@ -69,11 +70,11 @@ struct ContentView: View {
                     HStack(spacing: 5) {
                         Button(action: submitGuess) {
                             ZStack {
-                                Text("Enter")
                                 Rectangle()
                                     .foregroundColor(.black.opacity(0.2))
                                     .frame(width: 55, height: 50)
                                     .cornerRadius(5)
+                                Text("Enter")
                             }
                         }
                         ForEach(alphabet[19...25], id: \.self) { letter in
@@ -82,11 +83,11 @@ struct ContentView: View {
                             }
                         }
                         ZStack {
-                            Text("Del")
                             Rectangle()
                                 .foregroundColor(.black.opacity(0.2))
                                 .frame(width: 55, height: 50)
                                 .cornerRadius(5)
+                            Text("Del")
                         }
                     }
                 }
@@ -95,25 +96,46 @@ struct ContentView: View {
     }
     
     func submitGuess() {
-        // TODO: use objects inside the 2d "guesses" array
-        // that stores the character and its status.
-        // ie correct placement, in word but wrong placement, or incorrect
         let activeGuess = self.guesses[self.currentGuess]
-        var correctPlaceCount = 0
+        var totalCorrectCount: Int = 0
+        var correctLetterCounts: [String: Int] = [:]
+        var counts: [String: Int] = [:]
+
+        for item in self.testWord {
+            counts[item] = (counts[item] ?? 0) + 1
+        }
+        
         if !isValidGuess(arr: activeGuess) {
+            // TODO: render a popup warning that dissapears
             print("Error: guess does not have 5 letters")
             return
-            // TODO: render a popup warning that dissapears
         }
+        
+        // Get correct letter count
         for i in 0..<activeGuess.count {
             if testWord[i].lowercased() == activeGuess[i].letter.lowercased() {
-                correctPlaceCount += 1
-                self.guesses[self.currentGuess][i].status = Status.correct
+                totalCorrectCount += 1
+                correctLetterCounts[self.testWord[i].lowercased()] = (correctLetterCounts[self.testWord[i].lowercased()] ?? 0) + 1
             }
         }
         
-        currentGuess += 1
-        print("You have \(correctPlaceCount) letters in the right spot.")
+        // Get Tile status
+        for i in 0..<activeGuess.count {
+            if testWord[i].lowercased() == activeGuess[i].letter.lowercased() {
+                self.guesses[self.currentGuess][i].status = Status.correct
+            } else if correctLetterCounts[activeGuess[i].letter.lowercased()] ?? 0 < counts[activeGuess[i].letter.lowercased()] ?? 0 {
+                self.guesses[self.currentGuess][i].status = Status.incorrectPlacement
+            } else {
+                self.guesses[self.currentGuess][i].status = Status.incorrect
+            }
+        }
+        
+        if totalCorrectCount == 5 {
+            // TODO: render you won game over screen
+            print("Correct! Game Over")
+        } else {
+            self.currentGuess += 1
+        }
     }
     
     func inputLetter(letter: String) {
@@ -138,6 +160,18 @@ struct ContentView: View {
     struct Tile {
         var letter: String
         var status: Status
+        var color: Color {
+            switch status {
+            case Status.normal:
+                return Color.gray.opacity(0.3)
+            case Status.correct:
+                return Color.green
+            case Status.incorrectPlacement:
+                return Color.yellow
+            case Status.incorrect:
+                return Color.gray
+            }
+        }
     }
 }
 
@@ -146,11 +180,11 @@ struct KeyboardLetter: View {
     
     var body: some View {
         ZStack {
-            Text(letter)
             Rectangle()
                 .foregroundColor(.black.opacity(0.2)) // Change this with guesses
                 .frame(width: 30, height: 50)
                 .cornerRadius(5)
+            Text(letter)
         }
     }
 }
