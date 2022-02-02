@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		88CBECC627AB0C8F00A284C3 /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CBECC527AB0C8E00A284C3 /* TileView.swift */; };
+		88CBECC727AB0C8F00A284C3 /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CBECC527AB0C8E00A284C3 /* TileView.swift */; };
+		88CBECC927AB0C9D00A284C3 /* KeyboardLetterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CBECC827AB0C9D00A284C3 /* KeyboardLetterView.swift */; };
+		88CBECCA27AB0C9D00A284C3 /* KeyboardLetterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CBECC827AB0C9D00A284C3 /* KeyboardLetterView.swift */; };
+		88CBECCC27AB0D0900A284C3 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CBECCB27AB0D0900A284C3 /* Models.swift */; };
+		88CBECCD27AB0D0900A284C3 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CBECCB27AB0D0900A284C3 /* Models.swift */; };
 		88E257A527A7388C00A364A1 /* Word_GuessApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E2579527A7388800A364A1 /* Word_GuessApp.swift */; };
 		88E257A627A7388C00A364A1 /* Word_GuessApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E2579527A7388800A364A1 /* Word_GuessApp.swift */; };
 		88E257A727A7388C00A364A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E2579627A7388800A364A1 /* ContentView.swift */; };
@@ -16,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		88CBECC527AB0C8E00A284C3 /* TileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileView.swift; sourceTree = "<group>"; };
+		88CBECC827AB0C9D00A284C3 /* KeyboardLetterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLetterView.swift; sourceTree = "<group>"; };
+		88CBECCB27AB0D0900A284C3 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		88E2579527A7388800A364A1 /* Word_GuessApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word_GuessApp.swift; sourceTree = "<group>"; };
 		88E2579627A7388800A364A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		88E2579727A7388C00A364A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -57,6 +66,9 @@
 				88E2579527A7388800A364A1 /* Word_GuessApp.swift */,
 				88E2579627A7388800A364A1 /* ContentView.swift */,
 				88E2579727A7388C00A364A1 /* Assets.xcassets */,
+				88CBECC527AB0C8E00A284C3 /* TileView.swift */,
+				88CBECC827AB0C9D00A284C3 /* KeyboardLetterView.swift */,
+				88CBECCB27AB0D0900A284C3 /* Models.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -177,7 +189,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				88E257A727A7388C00A364A1 /* ContentView.swift in Sources */,
+				88CBECC627AB0C8F00A284C3 /* TileView.swift in Sources */,
 				88E257A527A7388C00A364A1 /* Word_GuessApp.swift in Sources */,
+				88CBECC927AB0C9D00A284C3 /* KeyboardLetterView.swift in Sources */,
+				88CBECCC27AB0D0900A284C3 /* Models.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,7 +201,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				88E257A827A7388C00A364A1 /* ContentView.swift in Sources */,
+				88CBECC727AB0C8F00A284C3 /* TileView.swift in Sources */,
 				88E257A627A7388C00A364A1 /* Word_GuessApp.swift in Sources */,
+				88CBECCA27AB0C9D00A284C3 /* KeyboardLetterView.swift in Sources */,
+				88CBECCD27AB0D0900A284C3 /* Models.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

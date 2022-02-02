@@ -7,35 +7,21 @@
 
 import SwiftUI
 
-// Global consts
-enum Status: String {
-    case normal = "normal"
-    case correct = "correct"
-    case incorrectPlacement = "incorrect_placement"
-    case incorrect = "incorrect"
-}
-var lightGray: Color = Color(red: 215/255, green: 215/255, blue: 215/255)
-var darkGray: Color = Color(red: 130/255, green: 130/255, blue: 130/255)
-var lightIncorrect: Color = Color(red: 120/255, green: 125/255, blue: 125/255)
-var darkIncorrect: Color = Color(red: 120/255, green: 125/255, blue: 125/255)
-// TODO: fix keyboard and tiles not updating colors right on dark mode switches
-// Probably because the dark mode check is in the switch statement and not where it's actually rendered (check the tile border for reference). But then why does it work with the Status.normal one?
-
 struct ContentView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
     // Increment on 'Enter'
     @State var currentGuess: Int = 0
-    @State var guesses: [[Tile]] = Array(repeating: Array(repeating: Tile(letter: "", status: Status.normal), count: 5), count: 6)
-    @State var keyboardLetters: [KeyboardLetter]
+    @State var guesses: [[LetterWithStatus]] = Array(repeating: Array(repeating: LetterWithStatus(letter: "", status: Status.normal), count: 5), count: 6)
+    @State var keyboardLetters: [LetterWithStatus]
     var alphabet: [String] = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"]
     var testWord: [String] = ["r", "a", "r", "e", "s"]
     
     init() {
-        var initArray: [KeyboardLetter] = []
+        var initArray: [LetterWithStatus] = []
         for letter in alphabet {
-            initArray.append(KeyboardLetter(letter: letter, status: Status.normal))
+            initArray.append(LetterWithStatus(letter: letter, status: Status.normal))
         }
         _keyboardLetters = State(initialValue: initArray)
     }
@@ -52,15 +38,7 @@ struct ContentView: View {
                 ForEach(0...5, id: \.self) { i in
                     HStack(spacing: 5) {
                         ForEach(0...4, id: \.self) { j in
-                            let guessTile = self.guesses[i][j]
-                            ZStack {
-                                Rectangle()
-                                    .fill(guessTile.color)
-                                    .border(guessTile.status == Status.normal ? colorScheme == .dark ? darkGray : lightGray : guessTile.color, width: 2)
-                                    .frame(width: 65, height: 65)
-                                Text(guessTile.letter)
-                                    .font(.title).fontWeight(.bold)
-                            }
+                            TileView(tile: self.guesses[i][j])
                         }
                     }
                 }
@@ -192,11 +170,15 @@ struct ContentView: View {
         for i in 0..<self.guesses[self.currentGuess].count {
             if self.guesses[self.currentGuess][i].letter == "" && i > 0 {
                 self.guesses[self.currentGuess][i-1].letter = ""
+                return
+            } else if i == self.guesses[self.currentGuess].count - 1 {
+                self.guesses[self.currentGuess][self.guesses[self.currentGuess].count - 1].letter = ""
+                return
             }
         }
     }
     
-    func isValidGuess(arr: [Tile]) -> Bool {
+    func isValidGuess(arr: [LetterWithStatus]) -> Bool {
         var hasEmptyString = false
         for tile in arr {
             if tile.letter == "" {
@@ -204,60 +186,6 @@ struct ContentView: View {
             }
         }
         return !hasEmptyString
-    }
-    
-    struct Tile {
-        var letter: String
-        var status: Status
-        var color: Color {
-            switch status {
-            case Status.normal:
-                return Color.black.opacity(0)
-            case Status.correct:
-                return Color.green
-            case Status.incorrectPlacement:
-                return Color.yellow
-            case Status.incorrect:
-                return Color(red: 150/255, green: 150/255, blue: 150/255)
-            }
-        }
-    }
-}
-
-struct KeyboardLetter {
-    @Environment(\.colorScheme) var colorScheme
-    
-    var letter: String
-    var status: Status
-    var color: Color {
-        switch status {
-        case Status.normal:
-            return colorScheme == .dark ? darkGray : lightGray
-        case Status.correct:
-            return Color.green
-        case Status.incorrectPlacement:
-            return Color.yellow
-        case Status.incorrect:
-            return Color(red: 150/255, green: 150/255, blue: 150/255)
-        }
-    }
-}
-
-struct KeyboardLetterView: View {
-    
-    @Environment(\.colorScheme) var colorScheme
-    
-    var kbLetter: KeyboardLetter
-    
-    var body: some View {
-        ZStack {
-            Rectangle()
-                .foregroundColor(kbLetter.status == Status.normal ? colorScheme == .dark ? darkGray : lightGray : kbLetter.color)
-                .frame(width: 30, height: 50)
-                .cornerRadius(5)
-            Text(kbLetter.letter)
-                .foregroundColor(colorScheme == .dark ? .white : .black)
-        }
     }
 }
 
