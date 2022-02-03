@@ -34,6 +34,8 @@ struct TileView: View {
                 .foregroundColor(tile.status != Status.normal ? .white : colorScheme == .dark ? .white : .black)
                 .font(.title)
                 .fontWeight(.bold)
+                .animation(.none)
         }
+        .scaleEffect(tile.scale)
     }
 }

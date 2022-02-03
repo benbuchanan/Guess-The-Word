@@ -9,6 +9,7 @@ import SwiftUI
 struct LetterWithStatus {
     var letter: String
     var status: Status
+    var scale: Double = 1
 }
 
 enum Status: String {

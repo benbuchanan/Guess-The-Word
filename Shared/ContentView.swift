@@ -160,7 +160,13 @@ struct ContentView: View {
     func inputLetter(letter: String) {
         for i in 0..<self.guesses[self.currentGuess].count {
             if self.guesses[self.currentGuess][i].letter == "" {
-                self.guesses[self.currentGuess][i].letter = letter
+                withAnimation(.linear(duration: 0.1)) {
+                    self.guesses[self.currentGuess][i].letter = letter
+                    self.guesses[self.currentGuess][i].scale += 0.05
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        self.guesses[self.currentGuess][i].scale = 1
+                    }
+                }
                 return
             }
         }
