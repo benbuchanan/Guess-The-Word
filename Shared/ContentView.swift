@@ -15,8 +15,8 @@ struct ContentView: View {
     @State var currentGuess: Int = 0
     @State var guesses: [[LetterWithStatus]] = Array(repeating: Array(repeating: LetterWithStatus(letter: "", status: Status.normal), count: 5), count: 6)
     @State var keyboardLetters: [LetterWithStatus]
+    @State var targetWord: [String] = ["", "", "", "", ""]
     var alphabet: [String] = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"]
-    var testWord: [String] = ["r", "a", "r", "e", "s"]
     
     init() {
         var initArray: [LetterWithStatus] = []
@@ -93,8 +93,12 @@ struct ContentView: View {
                 }
             }
         }
+        .onAppear() {
+            getNewRandomWordFromList()
+        }
     }
     
+    // TODO: add animation to tiles on guess submission
     func submitGuess() {
         let activeGuess = self.guesses[self.currentGuess]
         var totalCorrectCount: Int = 0
@@ -102,38 +106,49 @@ struct ContentView: View {
         var counts: [String: Int] = [:]
         var statusDict: [String: Status] = [:]
 
-        for item in self.testWord {
+        for item in self.targetWord {
             counts[item] = (counts[item] ?? 0) + 1
         }
         
-        if !isValidGuess(arr: activeGuess) {
+        let isValidGuess = isValidGuess(guess: activeGuess)
+        
+        if !isValidGuess.0 {
             // TODO: render a popup warning that dissapears
-            print("Error: guess does not have 5 letters")
+            print(isValidGuess.1)
             return
         }
         
         // Get correct letter count
         for i in 0..<activeGuess.count {
-            if testWord[i].lowercased() == activeGuess[i].letter.lowercased() {
+            if targetWord[i].lowercased() == activeGuess[i].letter.lowercased() {
                 totalCorrectCount += 1
-                correctLetterCounts[self.testWord[i].lowercased()] = (correctLetterCounts[self.testWord[i].lowercased()] ?? 0) + 1
+                correctLetterCounts[self.targetWord[i].lowercased()] = (correctLetterCounts[self.targetWord[i].lowercased()] ?? 0) + 1
             }
         }
         
         // Get Tile status
         for i in 0..<activeGuess.count {
             // Correct
-            if testWord[i].lowercased() == activeGuess[i].letter.lowercased() {
-                self.guesses[self.currentGuess][i].status = Status.correct
-                statusDict[self.guesses[self.currentGuess][i].letter] = Status.correct
+            if targetWord[i].lowercased() == activeGuess[i].letter.lowercased() {
+                withAnimation(.easeInOut(duration: 0.3).delay(0.15 * Double(i))) {
+                    self.guesses[self.currentGuess][i].flipped.toggle()
+                    self.guesses[self.currentGuess][i].status = Status.correct
+                    statusDict[self.guesses[self.currentGuess][i].letter] = Status.correct
+                }
             // Incorrect placement
             } else if correctLetterCounts[activeGuess[i].letter.lowercased()] ?? 0 < counts[activeGuess[i].letter.lowercased()] ?? 0 {
-                self.guesses[self.currentGuess][i].status = Status.incorrectPlacement
-                statusDict[self.guesses[self.currentGuess][i].letter] = Status.incorrectPlacement
+                withAnimation(.easeInOut(duration: 0.3).delay(0.15 * Double(i))) {
+                    self.guesses[self.currentGuess][i].flipped.toggle()
+                    self.guesses[self.currentGuess][i].status = Status.incorrectPlacement
+                    statusDict[self.guesses[self.currentGuess][i].letter] = Status.incorrectPlacement
+                }
             // Incorrect
             } else {
-                self.guesses[self.currentGuess][i].status = Status.incorrect
-                statusDict[self.guesses[self.currentGuess][i].letter] = Status.incorrect
+                withAnimation(.easeInOut(duration: 0.3).delay(0.15 * Double(i))) {
+                    self.guesses[self.currentGuess][i].flipped.toggle()
+                    self.guesses[self.currentGuess][i].status = Status.incorrect
+                    statusDict[self.guesses[self.currentGuess][i].letter] = Status.incorrect
+                }
             }
         }
         
@@ -141,10 +156,23 @@ struct ContentView: View {
         
         if totalCorrectCount == 5 {
             // TODO: render you won game over screen
-            print("Correct! Game Over")
-        } else {
+            print("Correct! Game over.")
+            startNewGame()
+        } else if self.currentGuess < 5 {
             self.currentGuess += 1
+        } else {
+            // TODO: game over screen here
+            print("You lose. Game over.")
         }
+    }
+    
+    func startNewGame() {
+        self.guesses = Array(repeating: Array(repeating: LetterWithStatus(letter: "", status: Status.normal), count: 5), count: 6)
+        for i in 0..<self.keyboardLetters.count {
+            self.keyboardLetters[i].status = Status.normal
+        }
+        getNewRandomWordFromList()
+        self.currentGuess = 0
     }
     
     func updateKeyboardStatus(statusDict: [String: Status]) {
@@ -184,14 +212,34 @@ struct ContentView: View {
         }
     }
     
-    func isValidGuess(arr: [LetterWithStatus]) -> Bool {
-        var hasEmptyString = false
-        for tile in arr {
+    func getNewRandomWordFromList() {
+        self.targetWord = wordList[Int.random(in: 0..<5757)].map(String.init)
+        print("generated new target word: \(self.targetWord)")
+    }
+    
+    func isValidGuess(guess: [LetterWithStatus]) -> (Bool, String) {
+        var error: String = ""
+        
+        var guessAsStringArray: [String] = []
+        for tile in guess {
             if tile.letter == "" {
-                hasEmptyString = true
+                return (false, "Guess does not have 5 letters.")
+            }
+            guessAsStringArray.append(tile.letter)
+        }
+        
+        let guessString: String = guessAsStringArray.joined(separator: "").lowercased()
+        var isValidWord = false
+        for word in wordList {
+            if word == guessString {
+                isValidWord = true
+                break
             }
         }
-        return !hasEmptyString
+        
+        error = isValidWord ? "" : "Guess is not a valid word."
+        
+        return (isValidWord, error)
     }
 }
 
