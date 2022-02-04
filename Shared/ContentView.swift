@@ -16,6 +16,8 @@ struct ContentView: View {
     @State var guesses: [[LetterWithStatus]] = Array(repeating: Array(repeating: LetterWithStatus(letter: "", status: Status.normal), count: 5), count: 6)
     @State var keyboardLetters: [LetterWithStatus]
     @State var targetWord: [String] = ["", "", "", "", ""]
+    @State var showGameOver: Bool = false
+    @State var gameOverTitleText: String = ""
     var alphabet: [String] = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"]
     
     init() {
@@ -68,7 +70,7 @@ struct ContentView: View {
                             ZStack {
                                 Rectangle()
                                     .foregroundColor(colorScheme == .dark ? darkGray : lightGray)
-                                    .frame(width: 55, height: 50)
+                                    .frame(width: 50, height: 50)
                                     .cornerRadius(5)
                                 Text("Enter")
                             }
@@ -83,15 +85,18 @@ struct ContentView: View {
                             ZStack {
                                 Rectangle()
                                     .foregroundColor(colorScheme == .dark ? darkGray : lightGray)
-                                    .frame(width: 55, height: 50)
+                                    .frame(width: 50, height: 50)
                                     .cornerRadius(5)
-                                Text("Del")
+                                Image(colorScheme == .dark ? "backspace-white" : "backspace-dark")
+                                    .resizable()
+                                    .frame(width: 25, height: 25)
                             }
                         }
                         .foregroundColor(colorScheme == .dark ? .white : .black)
                     }
-                }
+                }.padding(.bottom, 50)
             }
+            GameOverView(showGameOver: $showGameOver, gameOverTitleText: $gameOverTitleText, newGameFunc: startNewGame)
         }
         .onAppear() {
             getNewRandomWordFromList()
@@ -155,14 +160,16 @@ struct ContentView: View {
         updateKeyboardStatus(statusDict: statusDict)
         
         if totalCorrectCount == 5 {
-            // TODO: render you won game over screen
-            print("Correct! Game over.")
-            startNewGame()
+            // TODO: render you won game over screen AFTER tiles flip.
+            // Then call 'startNewGame()' on button press on game over screen overlay
+            self.gameOverTitleText = "Correct! You win!"
+            self.showGameOver = true
         } else if self.currentGuess < 5 {
             self.currentGuess += 1
         } else {
             // TODO: game over screen here
-            print("You lose. Game over.")
+            self.gameOverTitleText = "You lose. Game over."
+            self.showGameOver = true
         }
     }
     
@@ -173,6 +180,7 @@ struct ContentView: View {
         }
         getNewRandomWordFromList()
         self.currentGuess = 0
+        self.showGameOver = false
     }
     
     func updateKeyboardStatus(statusDict: [String: Status]) {
@@ -240,6 +248,42 @@ struct ContentView: View {
         error = isValidWord ? "" : "Guess is not a valid word."
         
         return (isValidWord, error)
+    }
+}
+
+struct GameOverView: View {
+    @Environment(\.colorScheme) var colorScheme
+
+    @Binding var showGameOver: Bool
+    @Binding var gameOverTitleText: String
+    var newGameFunc: () -> Void
+    
+    // TODO: display overall stats here and maybe leaderboard in the future?
+    
+    var body: some View {
+        if showGameOver {
+            ZStack {
+                Color.black
+                    .opacity(0.6)
+                    .ignoresSafeArea()
+                ZStack {
+                    VStack {
+                        Text(self.gameOverTitleText).foregroundColor(colorScheme == .dark ? .white : .black)
+                        Button(action: {
+                            self.newGameFunc()
+                        }) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 15).fill(.white)
+                                Text("New word").foregroundColor(.black)
+                            }.frame(width: 100, height: 30)
+                        }
+                    }
+                }
+                .frame(width: 300, height:450)
+                .background(colorScheme == .dark ? darkGray : lightGray)
+                .cornerRadius(30)
+            }.transition(.move(edge: .top))
+        }
     }
 }
 

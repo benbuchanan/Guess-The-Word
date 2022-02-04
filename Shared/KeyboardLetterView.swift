@@ -28,7 +28,7 @@ struct KeyboardLetterView: View {
         ZStack {
             Rectangle()
                 .foregroundColor(kbColor)
-                .frame(width: 30, height: 50)
+                .frame(width: 33, height: 50)
                 .cornerRadius(5)
             Text(kbLetter.letter)
                 .foregroundColor(colorScheme == .dark ? .white : .black)
