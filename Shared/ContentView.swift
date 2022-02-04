@@ -96,7 +96,7 @@ struct ContentView: View {
                     }
                 }.padding(.bottom, 50)
             }
-            GameOverView(showGameOver: $showGameOver, gameOverTitleText: $gameOverTitleText, newGameFunc: startNewGame)
+            GameOverView(showGameOver: $showGameOver, gameOverTitleText: $gameOverTitleText, targetWord: $targetWord, newGameFunc: startNewGame)
         }
         .onAppear() {
             getNewRandomWordFromList()
@@ -256,6 +256,7 @@ struct GameOverView: View {
 
     @Binding var showGameOver: Bool
     @Binding var gameOverTitleText: String
+    @Binding var targetWord: String
     var newGameFunc: () -> Void
     
     // TODO: display overall stats here and maybe leaderboard in the future?
@@ -269,6 +270,7 @@ struct GameOverView: View {
                 ZStack {
                     VStack {
                         Text(self.gameOverTitleText).foregroundColor(colorScheme == .dark ? .white : .black)
+                        Text("The word was \(self.targetWord)").foregroundColor(colorScheme == .dark ? .white : .black)
                         Button(action: {
                             self.newGameFunc()
                         }) {
