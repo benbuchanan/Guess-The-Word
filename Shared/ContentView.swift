@@ -256,7 +256,7 @@ struct GameOverView: View {
 
     @Binding var showGameOver: Bool
     @Binding var gameOverTitleText: String
-    @Binding var targetWord: String
+    @Binding var targetWord: [String]
     var newGameFunc: () -> Void
     
     // TODO: display overall stats here and maybe leaderboard in the future?
@@ -270,7 +270,7 @@ struct GameOverView: View {
                 ZStack {
                     VStack {
                         Text(self.gameOverTitleText).foregroundColor(colorScheme == .dark ? .white : .black)
-                        Text("The word was \(self.targetWord)").foregroundColor(colorScheme == .dark ? .white : .black)
+                        Text("The word was \(self.targetWord.joined(separator: ""))").foregroundColor(colorScheme == .dark ? .white : .black)
                         Button(action: {
                             self.newGameFunc()
                         }) {
