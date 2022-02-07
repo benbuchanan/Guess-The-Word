@@ -18,6 +18,8 @@ struct ContentView: View {
     @State var targetWord: [String] = ["", "", "", "", ""]
     @State var showGameOver: Bool = false
     @State var gameOverTitleText: String = ""
+    @State var showWarningView: Bool = false
+    @State var warningText: String = ""
     var alphabet: [String] = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"]
     
     init() {
@@ -29,77 +31,81 @@ struct ContentView: View {
     }
         
     var body: some View {
-        ZStack {
-            // Title and word squares
-            VStack(spacing: 5) {
-                Text("Guess the Word")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding()
-                ForEach(0...5, id: \.self) { i in
-                    HStack(spacing: 5) {
-                        ForEach(0...4, id: \.self) { j in
-                            TileView(tile: self.guesses[i][j])
+        GeometryReader { metrics in
+            ZStack {
+                // Title and word squares
+                VStack(spacing: 5) {
+                    Text("Guess the Word")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                    ForEach(0...5, id: \.self) { i in
+                        HStack(spacing: 5) {
+                            ForEach(0...4, id: \.self) { j in
+                                TileView(tile: self.guesses[i][j])
+                                    .frame(width: metrics.size.width / 6, height: metrics.size.width / 6)
+                            }
                         }
                     }
+                    Spacer()
                 }
-                Spacer()
-            }
-            
-            // Keyboard
-            VStack {
-                Spacer()
+                
+                // Keyboard
                 VStack {
-                    HStack(spacing: 5) {
-                        ForEach(0...9, id: \.self) { i in
-                            KeyboardLetterView(kbLetter: self.keyboardLetters[i]).onTapGesture {
-                                inputLetter(letter: self.keyboardLetters[i].letter)
+                    Spacer()
+                    VStack {
+                        HStack(spacing: 5) {
+                            ForEach(0...9, id: \.self) { i in
+                                KeyboardLetterView(kbLetter: self.keyboardLetters[i]).onTapGesture {
+                                    inputLetter(letter: self.keyboardLetters[i].letter)
+                                }.frame(width: metrics.size.width / 11.5)
                             }
                         }
-                    }
-                    HStack(spacing: 5) {
-                        ForEach(10...18, id: \.self) { i in
-                            KeyboardLetterView(kbLetter: self.keyboardLetters[i]).onTapGesture {
-                                inputLetter(letter: self.keyboardLetters[i].letter)
+                        HStack(spacing: 5) {
+                            ForEach(10...18, id: \.self) { i in
+                                KeyboardLetterView(kbLetter: self.keyboardLetters[i]).onTapGesture {
+                                    inputLetter(letter: self.keyboardLetters[i].letter)
+                                }.frame(width: metrics.size.width / 11.5)
                             }
                         }
-                    }
-                    HStack(spacing: 5) {
-                        Button(action: submitGuess) {
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(colorScheme == .dark ? darkGray : lightGray)
-                                    .frame(width: 50, height: 50)
-                                    .cornerRadius(5)
-                                Text("Enter")
+                        HStack(spacing: 5) {
+                            Button(action: submitGuess) {
+                                ZStack {
+                                    Rectangle()
+                                        .foregroundColor(colorScheme == .dark ? darkGray : lightGray)
+                                        .frame(width: 50, height: 50)
+                                        .cornerRadius(5)
+                                    Text("Enter")
+                                }
                             }
-                        }
-                        .foregroundColor(colorScheme == .dark ? .white : .black)
-                        ForEach(19...25, id: \.self) { i in
-                            KeyboardLetterView(kbLetter: self.keyboardLetters[i]).onTapGesture {
-                                inputLetter(letter: self.keyboardLetters[i].letter)
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                            ForEach(19...25, id: \.self) { i in
+                                KeyboardLetterView(kbLetter: self.keyboardLetters[i]).onTapGesture {
+                                    inputLetter(letter: self.keyboardLetters[i].letter)
+                                }.frame(width: metrics.size.width / 11.5)
                             }
-                        }
-                        Button(action: deleteLetter) {
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(colorScheme == .dark ? darkGray : lightGray)
-                                    .frame(width: 50, height: 50)
-                                    .cornerRadius(5)
-                                Image(colorScheme == .dark ? "backspace-white" : "backspace-dark")
-                                    .resizable()
-                                    .frame(width: 25, height: 25)
+                            Button(action: deleteLetter) {
+                                ZStack {
+                                    Rectangle()
+                                        .foregroundColor(colorScheme == .dark ? darkGray : lightGray)
+                                        .frame(width: 50, height: 50)
+                                        .cornerRadius(5)
+                                    Image(colorScheme == .dark ? "backspace-white" : "backspace-dark")
+                                        .resizable()
+                                        .frame(width: 25, height: 25)
+                                }
                             }
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
                         }
-                        .foregroundColor(colorScheme == .dark ? .white : .black)
-                    }
-                }.padding(.bottom, 50)
+                    }.padding(.bottom, 50)
+                }
+                ShortWarningView(showWarningView: $showWarningView, warningText: $warningText)
+                GameOverView(showGameOver: $showGameOver, gameOverTitleText: $gameOverTitleText, targetWord: $targetWord, newGameFunc: startNewGame)
             }
-            GameOverView(showGameOver: $showGameOver, gameOverTitleText: $gameOverTitleText, targetWord: $targetWord, newGameFunc: startNewGame)
-        }
-        .onAppear() {
-            getNewRandomWordFromList()
+            .onAppear() {
+                getNewRandomWordFromList()
+            }
         }
     }
     
@@ -109,7 +115,8 @@ struct ContentView: View {
         var totalCorrectCount: Int = 0
         var correctLetterCounts: [String: Int] = [:]
         var counts: [String: Int] = [:]
-        var statusDict: [String: Status] = [:]
+        var statusArray: [LetterWithStatus] = []
+        var alreadyMarkedIncorrect: [String: Bool] = [:]
 
         for item in self.targetWord {
             counts[item] = (counts[item] ?? 0) + 1
@@ -118,8 +125,8 @@ struct ContentView: View {
         let isValidGuess = isValidGuess(guess: activeGuess)
         
         if !isValidGuess.0 {
-            // TODO: render a popup warning that dissapears
-            print(isValidGuess.1)
+            self.warningText = isValidGuess.1
+            self.showWarningView = true
             return
         }
         
@@ -138,38 +145,41 @@ struct ContentView: View {
                 withAnimation(.easeInOut(duration: 0.3).delay(0.15 * Double(i))) {
                     self.guesses[self.currentGuess][i].flipped.toggle()
                     self.guesses[self.currentGuess][i].status = Status.correct
-                    statusDict[self.guesses[self.currentGuess][i].letter] = Status.correct
+                    statusArray.append(LetterWithStatus(letter: self.guesses[self.currentGuess][i].letter, status: Status.correct))
                 }
             // Incorrect placement
-            } else if correctLetterCounts[activeGuess[i].letter.lowercased()] ?? 0 < counts[activeGuess[i].letter.lowercased()] ?? 0 {
+            } else if correctLetterCounts[activeGuess[i].letter.lowercased()] ?? 0 < counts[activeGuess[i].letter.lowercased()] ?? 0 && !(alreadyMarkedIncorrect[activeGuess[i].letter.lowercased()] ?? false) {
                 withAnimation(.easeInOut(duration: 0.3).delay(0.15 * Double(i))) {
                     self.guesses[self.currentGuess][i].flipped.toggle()
                     self.guesses[self.currentGuess][i].status = Status.incorrectPlacement
-                    statusDict[self.guesses[self.currentGuess][i].letter] = Status.incorrectPlacement
+                    statusArray.append(LetterWithStatus(letter: self.guesses[self.currentGuess][i].letter, status: Status.incorrectPlacement))
+                    alreadyMarkedIncorrect[activeGuess[i].letter.lowercased()] = true
                 }
             // Incorrect
             } else {
                 withAnimation(.easeInOut(duration: 0.3).delay(0.15 * Double(i))) {
                     self.guesses[self.currentGuess][i].flipped.toggle()
                     self.guesses[self.currentGuess][i].status = Status.incorrect
-                    statusDict[self.guesses[self.currentGuess][i].letter] = Status.incorrect
+                    statusArray.append(LetterWithStatus(letter: self.guesses[self.currentGuess][i].letter, status: Status.incorrect))
                 }
             }
         }
         
-        updateKeyboardStatus(statusDict: statusDict)
+        updateKeyboardStatus(statusArr: statusArray)
         
         if totalCorrectCount == 5 {
-            // TODO: render you won game over screen AFTER tiles flip.
-            // Then call 'startNewGame()' on button press on game over screen overlay
             self.gameOverTitleText = "Correct! You win!"
-            self.showGameOver = true
+            withAnimation(.default.delay(1)) {
+                self.showGameOver = true
+            }
         } else if self.currentGuess < 5 {
             self.currentGuess += 1
         } else {
             // TODO: game over screen here
             self.gameOverTitleText = "You lose. Game over."
-            self.showGameOver = true
+            withAnimation(.default.delay(1)) {
+                self.showGameOver = true
+            }
         }
     }
     
@@ -183,11 +193,19 @@ struct ContentView: View {
         self.showGameOver = false
     }
     
-    func updateKeyboardStatus(statusDict: [String: Status]) {
-        for (key, value) in statusDict {
+    func updateKeyboardStatus(statusArr: [LetterWithStatus]) {
+        for letter in statusArr {
             for i in 0..<self.keyboardLetters.count {
-                if self.keyboardLetters[i].letter == key && self.keyboardLetters[i].status != Status.correct {
-                    self.keyboardLetters[i].status = value
+                if self.keyboardLetters[i].letter == letter.letter {
+                    if self.keyboardLetters[i].status == Status.correct {
+                        continue
+                    } else if self.keyboardLetters[i].status == Status.incorrectPlacement {
+                        if letter.status != Status.incorrect {
+                            self.keyboardLetters[i].status = letter.status
+                        }
+                    } else {
+                        self.keyboardLetters[i].status = letter.status
+                    }
                 }
             }
         }
@@ -222,20 +240,19 @@ struct ContentView: View {
     
     func getNewRandomWordFromList() {
         self.targetWord = wordList[Int.random(in: 0..<5757)].map(String.init)
-        print("generated new target word: \(self.targetWord)")
     }
     
     func isValidGuess(guess: [LetterWithStatus]) -> (Bool, String) {
         var error: String = ""
-        
+
         var guessAsStringArray: [String] = []
         for tile in guess {
             if tile.letter == "" {
-                return (false, "Guess does not have 5 letters.")
+                return (false, "Guess does not have 5 letters")
             }
             guessAsStringArray.append(tile.letter)
         }
-        
+
         let guessString: String = guessAsStringArray.joined(separator: "").lowercased()
         var isValidWord = false
         for word in wordList {
@@ -244,9 +261,9 @@ struct ContentView: View {
                 break
             }
         }
-        
-        error = isValidWord ? "" : "Guess is not a valid word."
-        
+
+        error = isValidWord ? "" : "Guess is not a valid word"
+
         return (isValidWord, error)
     }
 }
@@ -284,7 +301,33 @@ struct GameOverView: View {
                 .frame(width: 300, height:450)
                 .background(colorScheme == .dark ? darkGray : lightGray)
                 .cornerRadius(30)
-            }.transition(.move(edge: .top))
+            }.transition(.opacity)
+        }
+    }
+}
+
+struct ShortWarningView: View {
+    @Environment(\.colorScheme) var colorScheme
+
+    @Binding var showWarningView: Bool
+    @Binding var warningText: String
+    
+    // TODO: fix zindex of this modal
+        
+    var body: some View {
+        if showWarningView {
+            VStack {
+                Text(self.warningText).foregroundColor(colorScheme == .dark ? .white : .black)
+            }
+            .frame(width: 200, height:50)
+            .background(colorScheme == .dark ? darkGray : lightGray)
+            .cornerRadius(30)
+            .transition(.opacity)
+            .onAppear() {
+                withAnimation(.default.delay(3)) {
+                    self.showWarningView = false
+                }
+            }
         }
     }
 }

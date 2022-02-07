@@ -18,7 +18,7 @@ struct KeyboardLetterView: View {
         case Status.correct:
             return Color.green
         case Status.incorrectPlacement:
-            return Color.yellow
+            return incorrectPlacementColor
         case Status.incorrect:
             return colorScheme == .dark ? darkDark : lightIncorrect
         }
@@ -28,7 +28,7 @@ struct KeyboardLetterView: View {
         ZStack {
             Rectangle()
                 .foregroundColor(kbColor)
-                .frame(width: 33, height: 50)
+                .frame(height: 50)
                 .cornerRadius(5)
             Text(kbLetter.letter)
                 .foregroundColor(colorScheme == .dark ? .white : .black)

@@ -22,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		889E613927B1C5F600C2C2B7 /* Word-Guess--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Word-Guess--iOS--Info.plist"; sourceTree = "<group>"; };
 		88CBECC527AB0C8E00A284C3 /* TileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileView.swift; sourceTree = "<group>"; };
 		88CBECC827AB0C9D00A284C3 /* KeyboardLetterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLetterView.swift; sourceTree = "<group>"; };
 		88CBECCB27AB0D0900A284C3 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
@@ -54,6 +55,7 @@
 		88E2578F27A7388700A364A1 = {
 			isa = PBXGroup;
 			children = (
+				889E613927B1C5F600C2C2B7 /* Word-Guess--iOS--Info.plist */,
 				88E2579427A7388800A364A1 /* Shared */,
 				88E257A327A7388C00A364A1 /* macOS */,
 				88E2579D27A7388C00A364A1 /* Products */,
@@ -332,6 +334,7 @@
 				DEVELOPMENT_TEAM = AGFK4NZMR2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Word-Guess--iOS--Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -362,6 +365,7 @@
 				DEVELOPMENT_TEAM = AGFK4NZMR2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Word-Guess--iOS--Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
