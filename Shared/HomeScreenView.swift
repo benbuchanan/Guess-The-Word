@@ -12,7 +12,7 @@ struct HomeScreenView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @Binding var showHome: Bool
-    @Binding var gameMode: GameMode
+    @Binding var gameMode: Int
     
     var body: some View {
         // Option to choose between 4, 5, or 6 letter games
@@ -23,8 +23,10 @@ struct HomeScreenView: View {
                 Spacer()
                 VStack {
                     Button(action: {
-                        self.gameMode = GameMode.four
-                        self.showHome = false
+                        self.gameMode = 4
+                        withAnimation(.default) {
+                            self.showHome = false
+                        }
                     }) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 25)
@@ -34,8 +36,10 @@ struct HomeScreenView: View {
                         }
                     }
                     Button(action: {
-                        self.gameMode = GameMode.five
-                        self.showHome = false
+                        self.gameMode = 5
+                        withAnimation(.default) {
+                            self.showHome = false
+                        }
                     }) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 25)
@@ -45,8 +49,10 @@ struct HomeScreenView: View {
                         }
                     }
                     Button(action: {
-                        self.gameMode = GameMode.six
-                        self.showHome = false
+                        self.gameMode = 6
+                        withAnimation(.default) {
+                            self.showHome = false
+                        }
                     }) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 25)
@@ -64,6 +70,6 @@ struct HomeScreenView: View {
 
 struct HomeScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeScreenView(showHome: .constant(true), gameMode: .constant(GameMode.five))
+        HomeScreenView(showHome: .constant(true), gameMode: .constant(5))
     }
 }

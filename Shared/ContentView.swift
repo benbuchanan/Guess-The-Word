@@ -19,13 +19,13 @@ struct ContentView: View {
     
     // Increment on 'Enter'
     @State var showHome: Bool = true
-    @State var gameMode: GameMode = GameMode.five
+    @State var gameMode: Int = 5
         
     var body: some View {
         if self.showHome {
             HomeScreenView(showHome: $showHome, gameMode: $gameMode)
         } else {
-            GameView(showHome: $showHome, gameMode: $gameMode)
+            GameView(showHome: $showHome, wordLength: self.gameMode)
         }
     }
 }
