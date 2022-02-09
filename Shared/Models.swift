@@ -20,6 +20,12 @@ enum Status: String {
     case incorrect = "incorrect"
 }
 
+enum GameMode: String {
+    case four = "four"
+    case five = "five"
+    case six = "six"
+}
+
 var lightGray: Color = Color(red: 215/255, green: 215/255, blue: 215/255)
 var darkGray: Color = Color(red: 130/255, green: 130/255, blue: 130/255)
 var lightIncorrect: Color = Color(red: 120/255, green: 125/255, blue: 125/255)

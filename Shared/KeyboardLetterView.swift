@@ -11,6 +11,7 @@ struct KeyboardLetterView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var kbLetter: LetterWithStatus
+    var width: Double
     var kbColor: Color {
         switch kbLetter.status {
         case Status.normal:
@@ -28,7 +29,7 @@ struct KeyboardLetterView: View {
         ZStack {
             Rectangle()
                 .foregroundColor(kbColor)
-                .frame(height: 50)
+                .frame(width: self.width, height: self.width * 1.5)
                 .cornerRadius(5)
             Text(kbLetter.letter)
                 .foregroundColor(colorScheme == .dark ? .white : .black)
