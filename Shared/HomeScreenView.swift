@@ -16,54 +16,62 @@ struct HomeScreenView: View {
     
     var body: some View {
         // Option to choose between 4, 5, or 6 letter games
-        ZStack {
-            VStack {
-                Spacer()
-                Text("Guess that word").font(.title)
-                Spacer()
+        GeometryReader { metrics in
+            ZStack {
                 VStack {
-                    Button(action: {
-                        self.gameMode = 4
-                        withAnimation(.default) {
-                            self.showHome = false
+                    Spacer()
+                    Text("Guess that word").font(.largeTitle)
+                    Spacer()
+                    VStack {
+                        Button(action: {
+                            self.gameMode = 4
+                            withAnimation(.default) {
+                                self.showHome = false
+                            }
+                        }) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 25)
+                                    .fill(incorrectPlacementColor)
+                                    .frame(width: metrics.size.width - 100, height: 100)
+                                Text("4 Letters")
+                                    .font(.title)
+                                    .foregroundColor(.white)
+                            }
                         }
-                    }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 25)
-                                .fill(incorrectPlacementColor)
-                                .frame(width: 300, height: 50)
-                            Text("4 Letters").foregroundColor(.white)
+                        Button(action: {
+                            self.gameMode = 5
+                            withAnimation(.default) {
+                                self.showHome = false
+                            }
+                        }) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 25)
+                                    .fill(incorrectPlacementColor)
+                                    .frame(width: metrics.size.width - 100, height: 100)
+                                Text("5 Letters")
+                                    .font(.title)
+                                    .foregroundColor(.white)
+                            }
+                        }
+                        Button(action: {
+                            self.gameMode = 6
+                            withAnimation(.default) {
+                                self.showHome = false
+                            }
+                        }) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 25)
+                                    .fill(incorrectPlacementColor)
+                                    .frame(width: metrics.size.width - 100, height: 100)
+                                Text("6 Letters")
+                                    .font(.title)
+                                    .foregroundColor(.white)
+                            }
                         }
                     }
-                    Button(action: {
-                        self.gameMode = 5
-                        withAnimation(.default) {
-                            self.showHome = false
-                        }
-                    }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 25)
-                                .fill(incorrectPlacementColor)
-                                .frame(width: 300, height: 50)
-                            Text("5 Letters").foregroundColor(.white)
-                        }
-                    }
-                    Button(action: {
-                        self.gameMode = 6
-                        withAnimation(.default) {
-                            self.showHome = false
-                        }
-                    }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 25)
-                                .fill(incorrectPlacementColor)
-                                .frame(width: 300, height: 50)
-                            Text("6 Letters").foregroundColor(.white)
-                        }
-                    }
+                    Spacer()
                 }
-                Spacer()
-            }
+            }.frame(width: metrics.size.width, height: metrics.size.height)
         }
     }
 }
