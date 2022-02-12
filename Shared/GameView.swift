@@ -61,11 +61,28 @@ struct GameView: View {
                 // Title, tiles, and keyboard
                 VStack(spacing: 5) {
                     // Title
-                    Text("Guess the Word")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
+                    HStack {
+                        Text("Word Guessr")
+                            .font(AppFont.regularFont(fontSize: 30))
+                            .foregroundColor(colorScheme == .dark ? mainColor : secondaryColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+                        Spacer()
+                        Button(action: {
+                            withAnimation(.default) {
+                                self.showHome = true
+                            }
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(colorScheme == .dark ? darkGray : lightGray)
+                                    .frame(width: 40, height: 40)
+                                Image(colorScheme == .dark ? "home-white" : "home-dark")
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
+                            }.padding(.trailing, 20)
+                        }
+                    }
                     
                     // Tiles
                     ForEach(0...5, id: \.self) { i in
@@ -127,9 +144,9 @@ struct GameView: View {
                     Spacer()
                 }.frame(maxHeight: metrics.size.height)
                 
-                ShortWarningView(showWarningView: $showWarningView, warningText: $warningText).offset(y: -70)
+                ShortWarningView(showWarningView: $showWarningView, warningText: $warningText).offset(y: -metrics.size.height / 5)
                 
-                // Dim background for game over screen
+                // Dim background for the game over screen
                 if self.showGameOver {
                     Color.black
                         .opacity(0.6)
@@ -314,37 +331,58 @@ struct GameOverView: View {
     var newGameFunc: () -> Void
     
     // TODO: display overall stats here and maybe leaderboard in the future?
+    // A graph of stats like wordle?
     
     var body: some View {
         if showGameOver {
             ZStack {
-                VStack {
-                    Text(self.gameOverTitleText).foregroundColor(colorScheme == .dark ? .white : .black)
-                    
-                    Text("The word was \(self.targetWord.joined(separator: ""))").foregroundColor(colorScheme == .dark ? .white : .black)
-                    
-                    Button(action: {
-                        self.newGameFunc()
-                    }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 15).fill(.white)
-                            Text("New word").foregroundColor(.black)
-                        }.frame(width: 100, height: 30)
-                    }
-                    
-                    Button(action: {
-                        withAnimation(.default) {
-                            self.showHome = true
+                GeometryReader { metrics in
+                    VStack {
+                        Spacer()
+                        
+                        Text(self.gameOverTitleText)
+                            .font(AppFont.mediumFont(fontSize: 25))
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                            .padding(.bottom)
+                        Text("The word was ")
+                            .font(AppFont.regularFont(fontSize: 20))
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                        + Text(self.targetWord.joined(separator: "")).font(AppFont.boldFont(fontSize: 20))
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            self.newGameFunc()
+                        }) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .fill(secondaryColor)
+                                    .frame(width: metrics.size.width - 100, height: 50)
+                                Text("New word")
+                                    .font(AppFont.regularFont(fontSize: 20))
+                                    .foregroundColor(.white)
+                            }
                         }
-                    }) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 15).fill(.white)
-                            Text("Home").foregroundColor(.black)
-                        }.frame(width: 100, height: 30)
-                    }
+                        
+                        Button(action: {
+                            withAnimation(.default) {
+                                self.showHome = true
+                            }
+                        }) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .fill(secondaryColor)
+                                    .frame(width: metrics.size.width - 100, height: 50)
+                                Text("Home")
+                                    .font(AppFont.regularFont(fontSize: 20))
+                                    .foregroundColor(.white)
+                            }
+                        }
+                        Spacer()
+                    }.frame(width: metrics.size.width, height: metrics.size.height)
                 }
             }
-            .frame(width: 300, height:450)
+            .frame(width: 300, height:400)
             .background(colorScheme == .dark ? darkGray : lightGray)
             .cornerRadius(30)
             .transition(.scale)
@@ -361,12 +399,14 @@ struct ShortWarningView: View {
     var body: some View {
         if showWarningView {
             VStack {
-                Text(self.warningText).foregroundColor(colorScheme == .dark ? .white : .black)
+                Text(self.warningText)
+                    .font(AppFont.regularFont(fontSize: 20))
+                    .foregroundColor(.white)
             }
             .transition(.scale)
             .frame(width: 200, height:50)
-            .background(colorScheme == .dark ? darkGray : lightGray)
-            .cornerRadius(30)
+            .background(secondaryColor)
+            .cornerRadius(10)
             .onAppear() {
                 Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
                     self.showWarningView = false

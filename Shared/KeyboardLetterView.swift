@@ -19,7 +19,7 @@ struct KeyboardLetterView: View {
         case Status.correct:
             return Color.green
         case Status.incorrectPlacement:
-            return incorrectPlacementColor
+            return mainColor
         case Status.incorrect:
             return colorScheme == .dark ? darkDark : lightIncorrect
         }

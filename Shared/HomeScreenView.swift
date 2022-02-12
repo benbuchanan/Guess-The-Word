@@ -20,7 +20,10 @@ struct HomeScreenView: View {
             ZStack {
                 VStack {
                     Spacer()
-                    Text("Guess that word").font(.largeTitle)
+//                    Text("WordGuessr").font(.largeTitle)
+                    Image("WordGuessrLogo2")
+                        .resizable()
+                        .frame(width: metrics.size.width, height: metrics.size.width)
                     Spacer()
                     VStack {
                         Button(action: {
@@ -30,11 +33,11 @@ struct HomeScreenView: View {
                             }
                         }) {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 25)
-                                    .fill(incorrectPlacementColor)
-                                    .frame(width: metrics.size.width - 100, height: 100)
-                                Text("4 Letters")
-                                    .font(.title)
+                                RoundedRectangle(cornerRadius: 50)
+                                    .fill(secondaryColor)
+                                    .frame(width: metrics.size.width - 100, height: 60)
+                                Text("Four Letters")
+                                    .font(AppFont.regularFont(fontSize: 20))
                                     .foregroundColor(.white)
                             }
                         }
@@ -45,14 +48,14 @@ struct HomeScreenView: View {
                             }
                         }) {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 25)
-                                    .fill(incorrectPlacementColor)
-                                    .frame(width: metrics.size.width - 100, height: 100)
-                                Text("5 Letters")
-                                    .font(.title)
+                                RoundedRectangle(cornerRadius: 50)
+                                    .fill(secondaryColor)
+                                    .frame(width: metrics.size.width - 100, height: 60)
+                                Text("Five Letters")
+                                    .font(AppFont.regularFont(fontSize: 20))
                                     .foregroundColor(.white)
                             }
-                        }
+                        }.padding(10)
                         Button(action: {
                             self.gameMode = 6
                             withAnimation(.default) {
@@ -60,16 +63,15 @@ struct HomeScreenView: View {
                             }
                         }) {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 25)
-                                    .fill(incorrectPlacementColor)
-                                    .frame(width: metrics.size.width - 100, height: 100)
-                                Text("6 Letters")
-                                    .font(.title)
+                                RoundedRectangle(cornerRadius: 50)
+                                    .fill(secondaryColor)
+                                    .frame(width: metrics.size.width - 100, height: 60)
+                                Text("Six Letters")
+                                    .font(AppFont.regularFont(fontSize: 20))
                                     .foregroundColor(.white)
                             }
-                        }
+                        }.padding(.bottom, 40)
                     }
-                    Spacer()
                 }
             }.frame(width: metrics.size.width, height: metrics.size.height)
         }
