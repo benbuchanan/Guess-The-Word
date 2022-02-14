@@ -25,8 +25,8 @@ struct GameView: View {
     @State var guesses: [[LetterWithStatus]]
     @State var keyboardLetters: [LetterWithStatus]
     @State var targetWord: [String] = ["", "", "", "", ""]
-    @State var showGameOver: Bool = true
-    @State var gameOverTitleText: String = "Congrats you win"
+    @State var showGameOver: Bool = false
+    @State var gameOverTitleText: String = ""
     @State var showWarningView: Bool = false
     @State var warningText: String = ""
     @State var scoreArray: [Int]
