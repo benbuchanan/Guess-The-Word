@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct ContentView: View {
     
@@ -20,6 +21,10 @@ struct ContentView: View {
     // Increment on 'Enter'
     @State var showHome: Bool = true
     @State var gameMode: Int = 5
+    
+    init() {
+      FirebaseApp.configure()
+    }
         
     var body: some View {
         if self.showHome {

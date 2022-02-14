@@ -6,14 +6,15 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct GameView: View {
     
-    // TODO: support 4 letter and 6 letter games as well
-    // Need to get word lists for those games
+    // TODO: hints
     // Have hints that people can buy
     // Winning games gives hints but also purchaseable
-    // TODO: have way to get back to home screen
+    // TODO: Google analytics events
+    // TODO: Help screen with tile color meanings
     
     @Environment(\.colorScheme) var colorScheme
     
@@ -24,10 +25,11 @@ struct GameView: View {
     @State var guesses: [[LetterWithStatus]]
     @State var keyboardLetters: [LetterWithStatus]
     @State var targetWord: [String] = ["", "", "", "", ""]
-    @State var showGameOver: Bool = false
-    @State var gameOverTitleText: String = ""
+    @State var showGameOver: Bool = true
+    @State var gameOverTitleText: String = "Congrats you win"
     @State var showWarningView: Bool = false
     @State var warningText: String = ""
+    @State var scoreArray: [Int]
     var alphabet: [String] = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"]
     
     init(showHome: Binding<Bool>, wordLength: Int) {
@@ -51,10 +53,9 @@ struct GameView: View {
         default:
             self._wordList = State(initialValue: fiveLetterWordList)
         }
+        _scoreArray = State(initialValue: UserDefaults.standard.array(forKey: String(wordLength)) as? [Int] ?? Array(repeating: 0, count: 6))
     }
-    
-    // TODO: make keyboard in same vstack as tiless
-        
+            
     var body: some View {
         GeometryReader { metrics in
             ZStack {
@@ -153,7 +154,7 @@ struct GameView: View {
                         .ignoresSafeArea()
                 }
                 
-                GameOverView(showGameOver: $showGameOver, gameOverTitleText: $gameOverTitleText, targetWord: $targetWord, showHome: $showHome, newGameFunc: startNewGame)
+                GameOverView(showGameOver: $showGameOver, gameOverTitleText: $gameOverTitleText, targetWord: $targetWord, showHome: $showHome, scoreArray: $scoreArray, currentGuess: $currentGuess, width: metrics.size.width - 50, height: metrics.size.height - 150, newGameFunc: startNewGame)
             }
             .onAppear() {
                 getNewRandomWordFromList()
@@ -161,7 +162,6 @@ struct GameView: View {
         }.transition(.move(edge: .trailing))
     }
     
-    // TODO: add animation to tiles on guess submission
     func submitGuess() {
         let activeGuess = self.guesses[self.currentGuess]
         var totalCorrectCount: Int = 0
@@ -220,18 +220,36 @@ struct GameView: View {
         updateKeyboardStatus(statusArr: statusArray)
         
         if totalCorrectCount == self.wordLength {
+            // Game won
+            // Save score to user defaults
+            // if defaults array exists, just increment index at currentGuess
+            self.scoreArray[self.currentGuess] += 1
+            UserDefaults.standard.set(self.scoreArray, forKey: String(self.wordLength))
+            
             self.gameOverTitleText = "Correct! You win!"
             withAnimation(.default.delay(1)) {
                 self.showGameOver = true
             }
+            
+            FirebaseAnalytics.Analytics.logEvent("game_win", parameters: [
+                "word_length": self.wordLength,
+                "word": self.targetWord.joined(separator: ""),
+                "total_wins_at_word_length": self.scoreArray.reduce(0, +)
+            ])
         } else if self.currentGuess < 5 {
+            // Continue to next guess
             self.currentGuess += 1
         } else {
-            // TODO: game over screen here
-            self.gameOverTitleText = "You lose. Game over."
+            // Game lost
+            self.gameOverTitleText = "Game over, you lose."
             withAnimation(.default.delay(1)) {
                 self.showGameOver = true
             }
+            
+            FirebaseAnalytics.Analytics.logEvent("game_lose", parameters: [
+                "word_length": self.wordLength,
+                "word": self.targetWord.joined(separator: "")
+            ])
         }
     }
     
@@ -328,6 +346,10 @@ struct GameOverView: View {
     @Binding var gameOverTitleText: String
     @Binding var targetWord: [String]
     @Binding var showHome: Bool
+    @Binding var scoreArray: [Int]
+    @Binding var currentGuess: Int
+    @State var width: CGFloat
+    @State var height: CGFloat
     var newGameFunc: () -> Void
     
     // TODO: display overall stats here and maybe leaderboard in the future?
@@ -344,10 +366,32 @@ struct GameOverView: View {
                             .font(AppFont.mediumFont(fontSize: 25))
                             .foregroundColor(colorScheme == .dark ? .white : .black)
                             .padding(.bottom)
-                        Text("The word was ")
+                        
+                        (Text("The word was ")
                             .font(AppFont.regularFont(fontSize: 20))
                             .foregroundColor(colorScheme == .dark ? .white : .black)
-                        + Text(self.targetWord.joined(separator: "")).font(AppFont.boldFont(fontSize: 20))
+                        + Text(self.targetWord.joined(separator: ""))
+                            .font(AppFont.boldFont(fontSize: 20)))
+                            .padding(.bottom, 2)
+                        
+                        Button(action: {
+                            // Report word as firebase analytics event
+                            FirebaseAnalytics.Analytics.logEvent("report_word", parameters: [
+                                "word_length": self.targetWord.joined(separator: "").count,
+                                "word": self.targetWord.joined(separator: "")
+                            ])
+
+                        }) {
+                            Text("Report Word").font(AppFont.regularFont(fontSize: 15))
+                        }
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .leading) {
+                            StatsChartView(scoreArray: self.scoreArray, currentGuess: $currentGuess, gameOverStats: true)
+                        }
+                        .padding()
+                        .frame(width: metrics.size.width * 0.9, height: metrics.size.height / 2)
                         
                         Spacer()
                         
@@ -359,7 +403,7 @@ struct GameOverView: View {
                                     .fill(secondaryColor)
                                     .frame(width: metrics.size.width - 100, height: 50)
                                 Text("New word")
-                                    .font(AppFont.regularFont(fontSize: 20))
+                                    .font(AppFont.regularFont(fontSize: 18))
                                     .foregroundColor(.white)
                             }
                         }
@@ -374,7 +418,7 @@ struct GameOverView: View {
                                     .fill(secondaryColor)
                                     .frame(width: metrics.size.width - 100, height: 50)
                                 Text("Home")
-                                    .font(AppFont.regularFont(fontSize: 20))
+                                    .font(AppFont.regularFont(fontSize: 18))
                                     .foregroundColor(.white)
                             }
                         }
@@ -382,7 +426,7 @@ struct GameOverView: View {
                     }.frame(width: metrics.size.width, height: metrics.size.height)
                 }
             }
-            .frame(width: 300, height:400)
+            .frame(width: self.width, height: self.height)
             .background(colorScheme == .dark ? darkGray : lightGray)
             .cornerRadius(30)
             .transition(.scale)
