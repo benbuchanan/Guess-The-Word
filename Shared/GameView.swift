@@ -160,7 +160,8 @@ struct GameView: View {
                         }
                     }
                     Spacer()
-                }.frame(maxHeight: metrics.size.height)
+                }
+                .frame(maxHeight: metrics.size.height)
                 
                 ShortWarningView(showWarningView: $showWarningView, warningText: $warningText).offset(y: -metrics.size.height / 5)
                 
@@ -212,10 +213,6 @@ struct GameView: View {
             }
             .onAppear() {
                 getNewRandomWordFromList()
-            }
-            .onTapGesture() {
-                self.showDistribution = false
-                self.showGameOver = false
             }
         }.transition(.move(edge: .trailing))
     }
@@ -411,6 +408,7 @@ struct GameOverView: View {
     @Binding var highlightDistributionBar: Bool
     @State var width: CGFloat
     @State var height: CGFloat
+    @State var wordReported: Bool = false
     var newGameFunc: () -> Void
     
     // TODO: display overall stats here and maybe leaderboard in the future?
@@ -441,10 +439,13 @@ struct GameOverView: View {
                                 "word_length": self.targetWord.joined(separator: "").count,
                                 "word": self.targetWord.joined(separator: "")
                             ])
+                            
+                            self.wordReported = true
 
                         }) {
                             Text("Report Word").font(AppFont.regularFont(fontSize: 15))
                         }
+                        .disabled(self.wordReported)
                         
                         Spacer()
                         
