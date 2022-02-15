@@ -13,7 +13,7 @@ struct HomeScreenView: View {
     
     @Binding var showHome: Bool
     @Binding var gameMode: Int
-    @State var showHelp: Bool = true
+    @State var showHelp: Bool = false
     
     var body: some View {
         // Option to choose between 4, 5, or 6 letter games
