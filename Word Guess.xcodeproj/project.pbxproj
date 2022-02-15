@@ -159,8 +159,8 @@
 				88CBECCB27AB0D0900A284C3 /* Models.swift */,
 				889E613A27B37B6300C2C2B7 /* HomeScreenView.swift */,
 				889E613D27B3808400C2C2B7 /* GameView.swift */,
-				88E2579727A7388C00A364A1 /* Assets.xcassets */,
 				88E4E6AF27B8AEA8004DD704 /* StatsChartView.swift */,
+				88E2579727A7388C00A364A1 /* Assets.xcassets */,
 				88CE9FDB27BAE84700AA67E7 /* GoogleService-Info.plist */,
 			);
 			path = Shared;

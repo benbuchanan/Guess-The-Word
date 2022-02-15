@@ -31,6 +31,7 @@ struct GameView: View {
     @State var warningText: String = ""
     @State var scoreArray: [Int]
     @State var highlightDistributionBar: Bool = true
+    @State var showDistribution: Bool = false
     var alphabet: [String] = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"]
     
     init(showHome: Binding<Bool>, wordLength: Int) {
@@ -70,6 +71,21 @@ struct GameView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
                         Spacer()
+                        Button(action: {
+                            withAnimation(.default) {
+                                self.showDistribution = true
+                            }
+                        }) {
+                            ZStack {
+                                Circle()
+                                    .fill(colorScheme == .dark ? darkGray : lightGray)
+                                    .frame(width: 35, height: 35)
+                                Image(colorScheme == .dark ? "graph-white" : "graph-dark")
+                                    .resizable()
+                                    .frame(width: 18, height: 18)
+                            }.padding(.trailing, 5)
+                        }
+                        
                         Button(action: {
                             withAnimation(.default) {
                                 self.showHome = true
@@ -149,16 +165,57 @@ struct GameView: View {
                 ShortWarningView(showWarningView: $showWarningView, warningText: $warningText).offset(y: -metrics.size.height / 5)
                 
                 // Dim background for the game over screen
-                if self.showGameOver {
+                if self.showGameOver || self.showDistribution {
                     Color.black
                         .opacity(0.6)
                         .ignoresSafeArea()
+                }
+                
+                if self.showDistribution {
+                    ZStack {
+                        VStack {
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    self.showDistribution = false
+                                }) {
+                                    ZStack {
+                                        Circle()
+                                            .fill(darkDark)
+                                            .frame(width: 35, height: 35)
+                                        Text("X")
+                                            .font(AppFont.mediumFont(fontSize: 20))
+                                            .foregroundColor(.white)
+                                            .frame(width: 20, height: 20)
+                                    }.padding(20)
+                                }
+                            }
+                            Spacer()
+                        }
+                        GeometryReader { geo in
+                            VStack {
+                                VStack(alignment: .leading) {
+                                    StatsChartView(scoreArray: self.scoreArray, currentGuess: $currentGuess, highlightDistributionBar: .constant(false))
+                                }
+                                .padding()
+                                .frame(width: geo.size.width * 0.9, height: geo.size.height * 0.8)
+                            }.frame(width: geo.size.width, height: geo.size.height)
+                        }
+                    }
+                    .frame(width: metrics.size.width - 50, height: metrics.size.height / 2)
+                    .background(colorScheme == .dark ? darkGray : lightGray)
+                    .cornerRadius(30)
+                    .transition(.scale)
                 }
                 
                 GameOverView(showGameOver: $showGameOver, gameOverTitleText: $gameOverTitleText, targetWord: $targetWord, showHome: $showHome, scoreArray: $scoreArray, currentGuess: $currentGuess, highlightDistributionBar: $highlightDistributionBar, width: metrics.size.width - 50, height: metrics.size.height - 150, newGameFunc: startNewGame)
             }
             .onAppear() {
                 getNewRandomWordFromList()
+            }
+            .onTapGesture() {
+                self.showDistribution = false
+                self.showGameOver = false
             }
         }.transition(.move(edge: .trailing))
     }
