@@ -78,10 +78,10 @@ struct GameView: View {
                             ZStack {
                                 Circle()
                                     .fill(colorScheme == .dark ? darkGray : lightGray)
-                                    .frame(width: 40, height: 40)
+                                    .frame(width: 35, height: 35)
                                 Image(colorScheme == .dark ? "home-white" : "home-dark")
                                     .resizable()
-                                    .frame(width: 20, height: 20)
+                                    .frame(width: 18, height: 18)
                             }.padding(.trailing, 20)
                         }
                     }
