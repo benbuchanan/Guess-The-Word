@@ -10,7 +10,7 @@ import SwiftUI
 struct StatsChartView: View {
     @State var scoreArray: [Int]
     @Binding var currentGuess: Int
-    @State var gameOverStats: Bool
+    @Binding var highlightDistributionBar: Bool
     
     var body: some View {
         VStack {
@@ -18,7 +18,7 @@ struct StatsChartView: View {
             ForEach(0..<self.scoreArray.count, id: \.self) { i in
                 HStack {
                     Text("\(i + 1)").frame(minWidth: 10)
-                    BarChartCell(value: self.scoreArray[i] != 0 && normalizedValue(index: i) < 0.1 ? 0.1 : normalizedValue(index: i), barColor: self.gameOverStats ? i == self.currentGuess ? secondaryColor : mainColor : mainColor, textValue: String(self.scoreArray[i]))
+                    BarChartCell(value: self.scoreArray[i] != 0 && normalizedValue(index: i) < 0.1 ? 0.1 : normalizedValue(index: i), barColor: self.highlightDistributionBar ? i == self.currentGuess ? secondaryColor : mainColor : mainColor, textValue: String(self.scoreArray[i]))
                 }
             }
         }

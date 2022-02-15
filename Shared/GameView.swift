@@ -14,7 +14,7 @@ struct GameView: View {
     // Have hints that people can buy
     // Winning games gives hints but also purchaseable
     // TODO: Google analytics events
-    // TODO: Help screen with tile color meanings
+    // TODO: IMPORTANT - Help screen with tile color meanings and how to report words
     
     @Environment(\.colorScheme) var colorScheme
     
@@ -30,6 +30,7 @@ struct GameView: View {
     @State var showWarningView: Bool = false
     @State var warningText: String = ""
     @State var scoreArray: [Int]
+    @State var highlightDistributionBar: Bool = true
     var alphabet: [String] = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"]
     
     init(showHome: Binding<Bool>, wordLength: Int) {
@@ -154,7 +155,7 @@ struct GameView: View {
                         .ignoresSafeArea()
                 }
                 
-                GameOverView(showGameOver: $showGameOver, gameOverTitleText: $gameOverTitleText, targetWord: $targetWord, showHome: $showHome, scoreArray: $scoreArray, currentGuess: $currentGuess, width: metrics.size.width - 50, height: metrics.size.height - 150, newGameFunc: startNewGame)
+                GameOverView(showGameOver: $showGameOver, gameOverTitleText: $gameOverTitleText, targetWord: $targetWord, showHome: $showHome, scoreArray: $scoreArray, currentGuess: $currentGuess, highlightDistributionBar: $highlightDistributionBar, width: metrics.size.width - 50, height: metrics.size.height - 150, newGameFunc: startNewGame)
             }
             .onAppear() {
                 getNewRandomWordFromList()
@@ -227,6 +228,7 @@ struct GameView: View {
             UserDefaults.standard.set(self.scoreArray, forKey: String(self.wordLength))
             
             self.gameOverTitleText = "Correct! You win!"
+            self.highlightDistributionBar = true;
             withAnimation(.default.delay(1)) {
                 self.showGameOver = true
             }
@@ -242,6 +244,7 @@ struct GameView: View {
         } else {
             // Game lost
             self.gameOverTitleText = "Game over, you lose."
+            self.highlightDistributionBar = false;
             withAnimation(.default.delay(1)) {
                 self.showGameOver = true
             }
@@ -348,6 +351,7 @@ struct GameOverView: View {
     @Binding var showHome: Bool
     @Binding var scoreArray: [Int]
     @Binding var currentGuess: Int
+    @Binding var highlightDistributionBar: Bool
     @State var width: CGFloat
     @State var height: CGFloat
     var newGameFunc: () -> Void
@@ -388,7 +392,7 @@ struct GameOverView: View {
                         Spacer()
                         
                         VStack(alignment: .leading) {
-                            StatsChartView(scoreArray: self.scoreArray, currentGuess: $currentGuess, gameOverStats: true)
+                            StatsChartView(scoreArray: self.scoreArray, currentGuess: $currentGuess, highlightDistributionBar: $highlightDistributionBar)
                         }
                         .padding()
                         .frame(width: metrics.size.width * 0.9, height: metrics.size.height / 2)
