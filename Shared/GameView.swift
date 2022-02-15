@@ -32,6 +32,7 @@ struct GameView: View {
     @State var scoreArray: [Int]
     @State var highlightDistributionBar: Bool = true
     @State var showDistribution: Bool = false
+    @State var wordReported: Bool = false
     var alphabet: [String] = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"]
     
     init(showHome: Binding<Bool>, wordLength: Int) {
@@ -209,7 +210,7 @@ struct GameView: View {
                     .transition(.scale)
                 }
                 
-                GameOverView(showGameOver: $showGameOver, gameOverTitleText: $gameOverTitleText, targetWord: $targetWord, showHome: $showHome, scoreArray: $scoreArray, currentGuess: $currentGuess, highlightDistributionBar: $highlightDistributionBar, width: metrics.size.width - 50, height: metrics.size.height - 150, newGameFunc: startNewGame)
+                GameOverView(showGameOver: $showGameOver, gameOverTitleText: $gameOverTitleText, targetWord: $targetWord, showHome: $showHome, scoreArray: $scoreArray, currentGuess: $currentGuess, highlightDistributionBar: $highlightDistributionBar, width: metrics.size.width - 50, height: metrics.size.height - 150, wordReported: $wordReported, newGameFunc: startNewGame)
             }
             .onAppear() {
                 getNewRandomWordFromList()
@@ -408,11 +409,8 @@ struct GameOverView: View {
     @Binding var highlightDistributionBar: Bool
     @State var width: CGFloat
     @State var height: CGFloat
-    @State var wordReported: Bool = false
+    @Binding var wordReported: Bool
     var newGameFunc: () -> Void
-    
-    // TODO: display overall stats here and maybe leaderboard in the future?
-    // A graph of stats like wordle?
     
     var body: some View {
         if showGameOver {
@@ -458,6 +456,7 @@ struct GameOverView: View {
                         Spacer()
                         
                         Button(action: {
+                            self.wordReported = false
                             self.newGameFunc()
                         }) {
                             ZStack {
@@ -472,6 +471,7 @@ struct GameOverView: View {
                         
                         Button(action: {
                             withAnimation(.default) {
+                                self.wordReported = false
                                 self.showHome = true
                             }
                         }) {
