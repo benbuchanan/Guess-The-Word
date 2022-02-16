@@ -472,7 +472,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "buchanan.Word-Guess";
 				PRODUCT_NAME = "Word Guess";
 				SDKROOT = iphoneos;
@@ -504,7 +504,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "buchanan.Word-Guess";
 				PRODUCT_NAME = "Word Guess";
 				SDKROOT = iphoneos;
