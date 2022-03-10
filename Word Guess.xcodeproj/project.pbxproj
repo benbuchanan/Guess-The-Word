@@ -39,6 +39,8 @@
 		88CE9FDC27BAE84700AA67E7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 88CE9FDB27BAE84700AA67E7 /* GoogleService-Info.plist */; };
 		88CE9FDD27BAE84700AA67E7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 88CE9FDB27BAE84700AA67E7 /* GoogleService-Info.plist */; };
 		88CE9FE027BAE9AF00AA67E7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 88CE9FDF27BAE9AF00AA67E7 /* FirebaseAnalytics */; };
+		88D98C9127CA993500DF535C /* Consts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D98C9027CA993500DF535C /* Consts.swift */; };
+		88D98C9227CA993500DF535C /* Consts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D98C9027CA993500DF535C /* Consts.swift */; };
 		88E257A527A7388C00A364A1 /* Word_GuessApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E2579527A7388800A364A1 /* Word_GuessApp.swift */; };
 		88E257A627A7388C00A364A1 /* Word_GuessApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E2579527A7388800A364A1 /* Word_GuessApp.swift */; };
 		88E257A727A7388C00A364A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E2579627A7388800A364A1 /* ContentView.swift */; };
@@ -47,6 +49,10 @@
 		88E257AA27A7388C00A364A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88E2579727A7388C00A364A1 /* Assets.xcassets */; };
 		88E4E6B027B8AEA9004DD704 /* StatsChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E4E6AF27B8AEA8004DD704 /* StatsChartView.swift */; };
 		88E4E6B127B8AEA9004DD704 /* StatsChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E4E6AF27B8AEA8004DD704 /* StatsChartView.swift */; };
+		88E5624427D84A240074AB0D /* CountryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E5624327D84A240074AB0D /* CountryView.swift */; };
+		88E5624527D84A240074AB0D /* CountryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E5624327D84A240074AB0D /* CountryView.swift */; };
+		88E5624727D84E3B0074AB0D /* countrydata.json in Resources */ = {isa = PBXBuildFile; fileRef = 88E5624627D84E3B0074AB0D /* countrydata.json */; };
+		88E5624827D84E3B0074AB0D /* countrydata.json in Resources */ = {isa = PBXBuildFile; fileRef = 88E5624627D84E3B0074AB0D /* countrydata.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +82,7 @@
 		88CBECC827AB0C9D00A284C3 /* KeyboardLetterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLetterView.swift; sourceTree = "<group>"; };
 		88CBECCB27AB0D0900A284C3 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		88CE9FDB27BAE84700AA67E7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		88D98C9027CA993500DF535C /* Consts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Consts.swift; sourceTree = "<group>"; };
 		88E2579527A7388800A364A1 /* Word_GuessApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word_GuessApp.swift; sourceTree = "<group>"; };
 		88E2579627A7388800A364A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		88E2579727A7388C00A364A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -83,6 +90,8 @@
 		88E257A227A7388C00A364A1 /* Word Guess.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Word Guess.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		88E257A427A7388C00A364A1 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		88E4E6AF27B8AEA8004DD704 /* StatsChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsChartView.swift; sourceTree = "<group>"; };
+		88E5624327D84A240074AB0D /* CountryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryView.swift; sourceTree = "<group>"; };
+		88E5624627D84E3B0074AB0D /* countrydata.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = countrydata.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +147,20 @@
 			path = Montserrat_Alternates;
 			sourceTree = "<group>";
 		};
+		88D98C9327CA99A500DF535C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				88E2579627A7388800A364A1 /* ContentView.swift */,
+				88CBECC527AB0C8E00A284C3 /* TileView.swift */,
+				88CBECC827AB0C9D00A284C3 /* KeyboardLetterView.swift */,
+				889E613A27B37B6300C2C2B7 /* HomeScreenView.swift */,
+				889E613D27B3808400C2C2B7 /* GameView.swift */,
+				88E4E6AF27B8AEA8004DD704 /* StatsChartView.swift */,
+				88E5624327D84A240074AB0D /* CountryView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		88E2578F27A7388700A364A1 = {
 			isa = PBXGroup;
 			children = (
@@ -151,17 +174,14 @@
 		88E2579427A7388800A364A1 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				885816D727B6C24F00220575 /* Fonts */,
+				88D98C9327CA99A500DF535C /* Views */,
 				88E2579527A7388800A364A1 /* Word_GuessApp.swift */,
-				88E2579627A7388800A364A1 /* ContentView.swift */,
-				88CBECC527AB0C8E00A284C3 /* TileView.swift */,
-				88CBECC827AB0C9D00A284C3 /* KeyboardLetterView.swift */,
 				88CBECCB27AB0D0900A284C3 /* Models.swift */,
-				889E613A27B37B6300C2C2B7 /* HomeScreenView.swift */,
-				889E613D27B3808400C2C2B7 /* GameView.swift */,
-				88E4E6AF27B8AEA8004DD704 /* StatsChartView.swift */,
+				88D98C9027CA993500DF535C /* Consts.swift */,
+				885816D727B6C24F00220575 /* Fonts */,
 				88E2579727A7388C00A364A1 /* Assets.xcassets */,
 				88CE9FDB27BAE84700AA67E7 /* GoogleService-Info.plist */,
+				88E5624627D84E3B0074AB0D /* countrydata.json */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -280,6 +300,7 @@
 				885816F027B7265E00220575 /* MontserratAlternates-BlackItalic.ttf in Resources */,
 				885816EF27B7265E00220575 /* MontserratAlternates-Thin.ttf in Resources */,
 				885816FA27B7265E00220575 /* OFL.txt in Resources */,
+				88E5624727D84E3B0074AB0D /* countrydata.json in Resources */,
 				8858170027B7265E00220575 /* MontserratAlternates-ExtraBold.ttf in Resources */,
 				885816FD27B7265E00220575 /* MontserratAlternates-Regular.ttf in Resources */,
 				885816F627B7265E00220575 /* MontserratAlternates-MediumItalic.ttf in Resources */,
@@ -297,6 +318,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88E257AA27A7388C00A364A1 /* Assets.xcassets in Resources */,
+				88E5624827D84E3B0074AB0D /* countrydata.json in Resources */,
 				88CE9FDD27BAE84700AA67E7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -313,8 +335,10 @@
 				88E257A527A7388C00A364A1 /* Word_GuessApp.swift in Sources */,
 				88E4E6B027B8AEA9004DD704 /* StatsChartView.swift in Sources */,
 				889E613B27B37B6400C2C2B7 /* HomeScreenView.swift in Sources */,
+				88E5624427D84A240074AB0D /* CountryView.swift in Sources */,
 				88CBECC927AB0C9D00A284C3 /* KeyboardLetterView.swift in Sources */,
 				88CBECCC27AB0D0900A284C3 /* Models.swift in Sources */,
+				88D98C9127CA993500DF535C /* Consts.swift in Sources */,
 				889E613E27B3808400C2C2B7 /* GameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,8 +352,10 @@
 				88E257A627A7388C00A364A1 /* Word_GuessApp.swift in Sources */,
 				88E4E6B127B8AEA9004DD704 /* StatsChartView.swift in Sources */,
 				889E613C27B37B6500C2C2B7 /* HomeScreenView.swift in Sources */,
+				88E5624527D84A240074AB0D /* CountryView.swift in Sources */,
 				88CBECCA27AB0C9D00A284C3 /* KeyboardLetterView.swift in Sources */,
 				88CBECCD27AB0D0900A284C3 /* Models.swift in Sources */,
+				88D98C9227CA993500DF535C /* Consts.swift in Sources */,
 				889E613F27B3808400C2C2B7 /* GameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -472,7 +498,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "buchanan.Word-Guess";
 				PRODUCT_NAME = "Word Guess";
 				SDKROOT = iphoneos;
@@ -504,7 +530,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "buchanan.Word-Guess";
 				PRODUCT_NAME = "Word Guess";
 				SDKROOT = iphoneos;
