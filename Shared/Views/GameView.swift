@@ -80,10 +80,9 @@ struct GameView: View {
                             ZStack {
                                 Circle()
                                     .fill(colorScheme == .dark ? darkGray : lightGray)
-                                    .frame(width: 35, height: 35)
                                 Image(colorScheme == .dark ? "graph-white" : "graph-dark")
                                     .resizable()
-                                    .frame(width: 18, height: 18)
+                                    .frame(width: metrics.size.height / 50, height: metrics.size.height / 50)
                             }.padding(.trailing, 5)
                         }
                         
@@ -95,23 +94,32 @@ struct GameView: View {
                             ZStack {
                                 Circle()
                                     .fill(colorScheme == .dark ? darkGray : lightGray)
-                                    .frame(width: 35, height: 35)
                                 Image(colorScheme == .dark ? "home-white" : "home-dark")
                                     .resizable()
-                                    .frame(width: 18, height: 18)
+                                    .frame(width: metrics.size.height / 50, height: metrics.size.height / 50)
                             }.padding(.trailing, 20)
                         }
                     }
+                    .frame(height: metrics.size.height / 25)
                     
                     // Tiles
+                    Spacer()
                     ForEach(0...5, id: \.self) { i in
-                        HStack(spacing: 5) {
-                            ForEach(0...self.wordLength - 1, id: \.self) { j in
-                                TileView(tile: self.guesses[i][j])
-                                    .frame(width: self.wordLength == 6 ? metrics.size.width / 7 : metrics.size.width / 6, height: self.wordLength == 6 ? metrics.size.width / 7 : metrics.size.width / 6)
+                        GeometryReader { gtest in
+                            HStack {
+                                Spacer()
+                                HStack(spacing: 5) {
+                                    ForEach(0...self.wordLength - 1, id: \.self) { j in
+                                        TileView(tile: self.guesses[i][j])
+                                            .frame(width: min(gtest.size.height, gtest.size.width / CGFloat(self.wordLength + 1)), height: min(gtest.size.height, gtest.size.width / CGFloat(self.wordLength + 1)))
+                                    }
+                                }
+                                Spacer()
                             }
                         }
                     }
+                    .frame(maxHeight: 100)
+                    Spacer()
                     
                     // Keyboard
                     Spacer()
@@ -136,7 +144,7 @@ struct GameView: View {
                                     Rectangle()
                                         .foregroundColor(colorScheme == .dark ? darkGray : lightGray)
                                         .frame(width: metrics.size.width / 8, height: metrics.size.width / 11.5 * 1.5)
-                                        .cornerRadius(5)
+                                        .cornerRadius(metrics.size.width / 11.5 / 5)
                                     Text("Enter")
                                 }
                             }
@@ -151,18 +159,17 @@ struct GameView: View {
                                     Rectangle()
                                         .foregroundColor(colorScheme == .dark ? darkGray : lightGray)
                                         .frame(width: metrics.size.width / 8, height: metrics.size.width / 11.5 * 1.5)
-                                        .cornerRadius(5)
+                                        .cornerRadius(metrics.size.width / 11.5 / 5)
                                     Image(colorScheme == .dark ? "backspace-white" : "backspace-dark")
                                         .resizable()
-                                        .frame(width: 25, height: 25)
+                                        .frame(width: metrics.size.width / 20, height: metrics.size.width / 20)
                                 }
                             }
                             .foregroundColor(colorScheme == .dark ? .white : .black)
                         }
                     }
-                    Spacer()
                 }
-                .frame(maxHeight: metrics.size.height)
+                .frame(maxWidth: metrics.size.width, maxHeight: metrics.size.height)
                 
                 ShortWarningView(showWarningView: $showWarningView, warningText: $warningText).offset(y: -metrics.size.height / 5)
                 
@@ -197,14 +204,14 @@ struct GameView: View {
                         GeometryReader { geo in
                             VStack {
                                 VStack(alignment: .leading) {
-                                    StatsChartView(scoreArray: self.scoreArray, currentGuess: $currentGuess, highlightDistributionBar: .constant(false))
+                                    StatsChartView(scoreArray: self.scoreArray, currentGuess: $currentGuess, highlightDistributionBar: .constant(false), viewWidth: geo.size.width)
                                 }
                                 .padding()
                                 .frame(width: geo.size.width * 0.9, height: geo.size.height * 0.8)
                             }.frame(width: geo.size.width, height: geo.size.height)
                         }
                     }
-                    .frame(width: metrics.size.width - 50, height: metrics.size.height / 2)
+                    .frame(width: metrics.size.width * 0.85, height: metrics.size.height / 2)
                     .background(colorScheme == .dark ? darkGray : lightGray)
                     .cornerRadius(30)
                     .transition(.scale)
@@ -448,7 +455,9 @@ struct GameOverView: View {
                         Spacer()
                         
                         VStack(alignment: .leading) {
-                            StatsChartView(scoreArray: self.scoreArray, currentGuess: $currentGuess, highlightDistributionBar: $highlightDistributionBar)
+                            GeometryReader { chart in
+                                StatsChartView(scoreArray: self.scoreArray, currentGuess: $currentGuess, highlightDistributionBar: $highlightDistributionBar, viewWidth: chart.size.width)
+                            }
                         }
                         .padding()
                         .frame(width: metrics.size.width * 0.9, height: metrics.size.height / 2)

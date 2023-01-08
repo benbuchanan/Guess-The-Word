@@ -15,10 +15,12 @@ struct HomeScreenView: View {
     @Binding var gameMode: Int
     @Binding var showCountries: Bool
     @State var showHelp: Bool = false
+    
         
     var body: some View {
         // Option to choose between 4, 5, or 6 letter games
         GeometryReader { metrics in
+            let fontSize = metrics.size.width / 25
             ZStack {
                 VStack {
                     HStack {
@@ -72,8 +74,10 @@ struct HomeScreenView: View {
                         }
                     }
                     Spacer()
+                        .frame(height: metrics.size.height / 3)
                     VStack(spacing: 15) {
                         HStack(spacing: 15) {
+                            Spacer()
                             Button(action: {
                                 withAnimation(.default) {
                                     self.showHome = false
@@ -96,13 +100,12 @@ struct HomeScreenView: View {
                                         }
                                         Spacer()
                                         Text("Countries")
-                                            .font(AppFont.boldFont(fontSize: 20))
+                                            .font(AppFont.boldFont(fontSize: fontSize))
                                             .foregroundColor(.white)
                                             .multilineTextAlignment(.leading)
                                             .padding()
                                     }
                                 }
-                                .frame(width: metrics.size.width / 2.75, height: metrics.size.width / 2.25)
                             }
                             Button(action: {
                                 self.showCountries = false
@@ -120,23 +123,24 @@ struct HomeScreenView: View {
                                         HStack {
                                             Spacer()
                                             Text("4")
-                                                .font(AppFont.boldFont(fontSize: 50))
+                                                .font(AppFont.boldFont(fontSize: metrics.size.width / 10))
                                                 .foregroundColor(.white)
                                                 .frame(width: metrics.size.width / 10, height: metrics.size.width / 10)
                                                 .padding()
                                         }
                                         Spacer()
                                         Text("Four Letters")
-                                            .font(AppFont.boldFont(fontSize: 20))
+                                            .font(AppFont.boldFont(fontSize: fontSize))
                                             .foregroundColor(.white)
                                             .multilineTextAlignment(.leading)
                                             .padding()
                                     }
                                 }
-                                .frame(width: metrics.size.width / 2.75, height: metrics.size.width / 2.25)
                             }
+                            Spacer()
                         }
                         HStack(spacing: 15) {
+                            Spacer()
                             Button(action: {
                                 self.showCountries = false
                                 self.gameMode = 5
@@ -153,20 +157,19 @@ struct HomeScreenView: View {
                                         HStack {
                                             Spacer()
                                             Text("5")
-                                                .font(AppFont.boldFont(fontSize: 50))
+                                                .font(AppFont.boldFont(fontSize: metrics.size.width / 10))
                                                 .foregroundColor(.white)
                                                 .frame(width: metrics.size.width / 10, height: metrics.size.width / 10)
                                                 .padding()
                                         }
                                         Spacer()
                                         Text("Five Letters")
-                                            .font(AppFont.boldFont(fontSize: 20))
+                                            .font(AppFont.boldFont(fontSize: fontSize))
                                             .foregroundColor(.white)
                                             .multilineTextAlignment(.leading)
                                             .padding()
                                     }
                                 }
-                                .frame(width: metrics.size.width / 2.75, height: metrics.size.width / 2.25)
                             }
                             Button(action: {
                                 self.showCountries = false
@@ -184,23 +187,24 @@ struct HomeScreenView: View {
                                         HStack {
                                             Spacer()
                                             Text("6")
-                                                .font(AppFont.boldFont(fontSize: 50))
+                                                .font(AppFont.boldFont(fontSize: metrics.size.width / 10))
                                                 .foregroundColor(.white)
                                                 .frame(width: metrics.size.width / 10, height: metrics.size.width / 10)
                                                 .padding()
                                         }
                                         Spacer()
                                         Text("Six Letters")
-                                            .font(AppFont.boldFont(fontSize: 20))
+                                            .font(AppFont.boldFont(fontSize: fontSize))
                                             .foregroundColor(.white)
                                             .multilineTextAlignment(.leading)
                                             .padding()
                                     }
                                 }
-                                .frame(width: metrics.size.width / 2.75, height: metrics.size.width / 2.25)
                             }
+                            Spacer()
                         }
-                    }.padding(.bottom)
+                    }
+                    .padding(.bottom)
 //                    // TODO: toolbar here to view stats?
 //                    Spacer()
 //                    HStack {

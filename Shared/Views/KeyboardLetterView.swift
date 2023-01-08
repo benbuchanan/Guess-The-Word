@@ -30,9 +30,15 @@ struct KeyboardLetterView: View {
             Rectangle()
                 .foregroundColor(kbColor)
                 .frame(width: self.width, height: self.width * 1.5)
-                .cornerRadius(5)
+                .cornerRadius(self.width / 5)
             Text(kbLetter.letter)
                 .foregroundColor(colorScheme == .dark ? .white : .black)
         }
+    }
+}
+
+struct Previews_KeyboardLetterView_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
     }
 }

@@ -32,7 +32,7 @@ struct TileView: View {
                 .rotation3DEffect(Angle(degrees: tile.flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
             Text(tile.letter)
                 .foregroundColor(tile.status != Status.normal ? .white : colorScheme == .dark ? .white : .black)
-                .font(.title)
+                .font(.largeTitle)
                 .fontWeight(.bold)
                 .animation(.none)
         }

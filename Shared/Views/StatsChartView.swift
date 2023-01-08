@@ -11,10 +11,11 @@ struct StatsChartView: View {
     @State var scoreArray: [Int]
     @Binding var currentGuess: Int
     @Binding var highlightDistributionBar: Bool
+    var viewWidth: Double
     
     var body: some View {
         VStack {
-            Text("Distribution").font(AppFont.regularFont(fontSize: 15))
+            Text("Distribution").font(AppFont.regularFont(fontSize: self.viewWidth / 18))
             ForEach(0..<self.scoreArray.count, id: \.self) { i in
                 HStack {
                     Text("\(i + 1)").frame(minWidth: 10)
