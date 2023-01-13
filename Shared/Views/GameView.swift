@@ -27,8 +27,6 @@ struct GameView: View {
     @State var targetWord: [String] = ["", "", "", "", ""]
     @State var showGameOver: Bool = false
     @State var gameOverTitleText: String = ""
-    @State var showWarningView: Bool = false
-    @State var warningText: String = ""
     @State var scoreArray: [Int]
     @State var highlightDistributionBar: Bool = true
     @State var showDistribution: Bool = false
@@ -175,8 +173,6 @@ struct GameView: View {
                     Spacer()
                 }
                 .frame(maxWidth: metrics.size.width, maxHeight: metrics.size.height)
-                
-                ShortWarningView(showWarningView: $showWarningView, warningText: $warningText).offset(y: -metrics.size.height / 5)
                 
                 // Dim background for the game over screen
                 if self.showGameOver || self.showDistribution {
@@ -518,32 +514,6 @@ struct GameOverView: View {
             .background(colorScheme == .dark ? darkGray : lightGray)
             .cornerRadius(30)
             .transition(.scale)
-        }
-    }
-}
-
-struct ShortWarningView: View {
-    @Environment(\.colorScheme) var colorScheme
-
-    @Binding var showWarningView: Bool
-    @Binding var warningText: String
-            
-    var body: some View {
-        if showWarningView {
-            VStack {
-                Text(self.warningText)
-                    .font(AppFont.regularFont(fontSize: 20))
-                    .foregroundColor(.white)
-            }
-            .transition(.scale)
-            .frame(width: 200, height:50)
-            .background(secondaryColor)
-            .cornerRadius(10)
-            .onAppear() {
-                Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
-                    self.showWarningView = false
-                }
-            }
         }
     }
 }
