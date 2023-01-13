@@ -12,6 +12,7 @@ struct KeyboardLetterView: View {
     
     var kbLetter: LetterWithStatus
     var width: Double
+    var fontSize: Double
     var kbColor: Color {
         switch kbLetter.status {
         case Status.normal:
@@ -32,6 +33,7 @@ struct KeyboardLetterView: View {
                 .frame(width: self.width, height: self.width * 1.5)
                 .cornerRadius(self.width / 5)
             Text(kbLetter.letter)
+                .font(.system(size: self.fontSize))
                 .foregroundColor(colorScheme == .dark ? .white : .black)
         }
     }

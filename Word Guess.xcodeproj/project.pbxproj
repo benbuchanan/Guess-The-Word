@@ -86,8 +86,8 @@
 		88E2579527A7388800A364A1 /* Word_GuessApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word_GuessApp.swift; sourceTree = "<group>"; };
 		88E2579627A7388800A364A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		88E2579727A7388C00A364A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		88E2579C27A7388C00A364A1 /* Word Guess.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Word Guess.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		88E257A227A7388C00A364A1 /* Word Guess.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Word Guess.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		88E2579C27A7388C00A364A1 /* Word Guessr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Word Guessr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		88E257A227A7388C00A364A1 /* Word Guessr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Word Guessr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		88E257A427A7388C00A364A1 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		88E4E6AF27B8AEA8004DD704 /* StatsChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsChartView.swift; sourceTree = "<group>"; };
 		88E5624327D84A240074AB0D /* CountryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryView.swift; sourceTree = "<group>"; };
@@ -189,8 +189,8 @@
 		88E2579D27A7388C00A364A1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				88E2579C27A7388C00A364A1 /* Word Guess.app */,
-				88E257A227A7388C00A364A1 /* Word Guess.app */,
+				88E2579C27A7388C00A364A1 /* Word Guessr.app */,
+				88E257A227A7388C00A364A1 /* Word Guessr.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -206,9 +206,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		88E2579B27A7388C00A364A1 /* Word Guess (iOS) */ = {
+		88E2579B27A7388C00A364A1 /* Word Guessr (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 88E257AD27A7388C00A364A1 /* Build configuration list for PBXNativeTarget "Word Guess (iOS)" */;
+			buildConfigurationList = 88E257AD27A7388C00A364A1 /* Build configuration list for PBXNativeTarget "Word Guessr (iOS)" */;
 			buildPhases = (
 				88E2579827A7388C00A364A1 /* Sources */,
 				88E2579927A7388C00A364A1 /* Frameworks */,
@@ -218,17 +218,17 @@
 			);
 			dependencies = (
 			);
-			name = "Word Guess (iOS)";
+			name = "Word Guessr (iOS)";
 			packageProductDependencies = (
 				88CE9FDF27BAE9AF00AA67E7 /* FirebaseAnalytics */,
 			);
 			productName = "Word Guess (iOS)";
-			productReference = 88E2579C27A7388C00A364A1 /* Word Guess.app */;
+			productReference = 88E2579C27A7388C00A364A1 /* Word Guessr.app */;
 			productType = "com.apple.product-type.application";
 		};
-		88E257A127A7388C00A364A1 /* Word Guess (macOS) */ = {
+		88E257A127A7388C00A364A1 /* Word Guessr (macOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 88E257B027A7388C00A364A1 /* Build configuration list for PBXNativeTarget "Word Guess (macOS)" */;
+			buildConfigurationList = 88E257B027A7388C00A364A1 /* Build configuration list for PBXNativeTarget "Word Guessr (macOS)" */;
 			buildPhases = (
 				88E2579E27A7388C00A364A1 /* Sources */,
 				88E2579F27A7388C00A364A1 /* Frameworks */,
@@ -238,9 +238,9 @@
 			);
 			dependencies = (
 			);
-			name = "Word Guess (macOS)";
+			name = "Word Guessr (macOS)";
 			productName = "Word Guess (macOS)";
-			productReference = 88E257A227A7388C00A364A1 /* Word Guess.app */;
+			productReference = 88E257A227A7388C00A364A1 /* Word Guessr.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -251,7 +251,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					88E2579B27A7388C00A364A1 = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -277,8 +277,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				88E2579B27A7388C00A364A1 /* Word Guess (iOS) */,
-				88E257A127A7388C00A364A1 /* Word Guess (macOS) */,
+				88E2579B27A7388C00A364A1 /* Word Guessr (iOS) */,
+				88E257A127A7388C00A364A1 /* Word Guessr (macOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -397,6 +397,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -457,6 +458,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -498,9 +500,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.6;
+				MARKETING_VERSION = 1.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = "buchanan.Word-Guess";
-				PRODUCT_NAME = "Word Guess";
+				PRODUCT_NAME = "Word Guessr";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -530,9 +532,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.6;
+				MARKETING_VERSION = 1.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = "buchanan.Word-Guess";
-				PRODUCT_NAME = "Word Guess";
+				PRODUCT_NAME = "Word Guessr";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -547,9 +549,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = AGFK4NZMR2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -562,7 +566,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "buchanan.Word-Guess";
-				PRODUCT_NAME = "Word Guess";
+				PRODUCT_NAME = "Word Guessr";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -575,9 +579,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = AGFK4NZMR2;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -590,7 +596,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "buchanan.Word-Guess";
-				PRODUCT_NAME = "Word Guess";
+				PRODUCT_NAME = "Word Guessr";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -609,7 +615,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		88E257AD27A7388C00A364A1 /* Build configuration list for PBXNativeTarget "Word Guess (iOS)" */ = {
+		88E257AD27A7388C00A364A1 /* Build configuration list for PBXNativeTarget "Word Guessr (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				88E257AE27A7388C00A364A1 /* Debug */,
@@ -618,7 +624,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		88E257B027A7388C00A364A1 /* Build configuration list for PBXNativeTarget "Word Guess (macOS)" */ = {
+		88E257B027A7388C00A364A1 /* Build configuration list for PBXNativeTarget "Word Guessr (macOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				88E257B127A7388C00A364A1 /* Debug */,

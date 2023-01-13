@@ -16,7 +16,7 @@ struct CountryView: View {
     
     @Binding var showHome: Bool
     @State var randomCountry: Country
-    @State var guess: String = "test"
+    @State var guess: String = ""
     @State var allSuggestions: [String]
     @State var currentSuggestions: [String] = []
     @State var showSuggestions: Bool = false

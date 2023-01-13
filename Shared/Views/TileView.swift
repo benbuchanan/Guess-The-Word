@@ -31,11 +31,12 @@ struct TileView: View {
                 .border(tile.status != Status.normal ? tileColor : tile.letter != "" ? colorScheme == .dark ? darkBorder : lightBorder : colorScheme == .dark ? darkDark : lightGray, width: 2)
                 .rotation3DEffect(Angle(degrees: tile.flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
             Text(tile.letter)
-                .foregroundColor(tile.status != Status.normal ? .white : colorScheme == .dark ? .white : .black)
+                .foregroundColor(tile.invalid ? Color.red : tile.status != Status.normal ? .white : colorScheme == .dark ? .white : .black)
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .animation(.none)
         }
         .scaleEffect(tile.scale)
+        .modifier(Shake(animatableData: CGFloat(tile.submittedIncorrectly)))
     }
 }

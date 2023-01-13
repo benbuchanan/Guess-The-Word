@@ -880,14 +880,6 @@
     "longitude": 138
   },
   {
-    "country": "Jersey",
-    "countryCode": "JE",
-    "countryCode3": "JEY",
-    "numericCode": 832,
-    "latitude": 49.21,
-    "longitude": -2.13
-  },
-  {
     "country": "Jordan",
     "countryCode": "JO",
     "countryCode3": "JOR",
@@ -926,14 +918,6 @@
     "numericCode": 408,
     "latitude": 40,
     "longitude": 127
-  },
-  {
-    "country": "Korea, Republic of",
-    "countryCode": "KR",
-    "countryCode3": "KOR",
-    "numericCode": 410,
-    "latitude": 37,
-    "longitude": 127.5
   },
   {
     "country": "South Korea",
@@ -1104,14 +1088,6 @@
     "longitude": 14.5833
   },
   {
-    "country": "Marshall Islands",
-    "countryCode": "MH",
-    "countryCode3": "MHL",
-    "numericCode": 584,
-    "latitude": 9,
-    "longitude": 168
-  },
-  {
     "country": "Martinique",
     "countryCode": "MQ",
     "countryCode3": "MTQ",
@@ -1150,14 +1126,6 @@
     "numericCode": 484,
     "latitude": 23,
     "longitude": -102
-  },
-  {
-    "country": "Micronesia, Federated States of",
-    "countryCode": "FM",
-    "countryCode3": "FSM",
-    "numericCode": 583,
-    "latitude": 6.9167,
-    "longitude": 158.25
   },
   {
     "country": "Moldova, Republic of",
@@ -1264,14 +1232,6 @@
     "longitude": 5.75
   },
   {
-    "country": "Netherlands Antilles",
-    "countryCode": "AN",
-    "countryCode3": "ANT",
-    "numericCode": 530,
-    "latitude": 12.25,
-    "longitude": -68.75
-  },
-  {
     "country": "New Caledonia",
     "countryCode": "NC",
     "countryCode3": "NCL",
@@ -1328,14 +1288,6 @@
     "longitude": 167.95
   },
   {
-    "country": "Northern Mariana Islands",
-    "countryCode": "MP",
-    "countryCode3": "MNP",
-    "numericCode": 580,
-    "latitude": 15.2,
-    "longitude": 145.75
-  },
-  {
     "country": "Norway",
     "countryCode": "NO",
     "countryCode3": "NOR",
@@ -1366,14 +1318,6 @@
     "numericCode": 585,
     "latitude": 7.5,
     "longitude": 134.5
-  },
-  {
-    "country": "Palestinian Territory, Occupied",
-    "countryCode": "PS",
-    "countryCode3": "PSE",
-    "numericCode": 275,
-    "latitude": 32,
-    "longitude": 35.25
   },
   {
     "country": "Panama",
@@ -1792,14 +1736,6 @@
     "longitude": 1.1667
   },
   {
-    "country": "Tokelau",
-    "countryCode": "TK",
-    "countryCode3": "TKL",
-    "numericCode": 772,
-    "latitude": -9,
-    "longitude": -172
-  },
-  {
     "country": "Tonga",
     "countryCode": "TO",
     "countryCode3": "TON",
@@ -1848,14 +1784,6 @@
     "longitude": -71.5833
   },
   {
-    "country": "Tuvalu",
-    "countryCode": "TV",
-    "countryCode3": "TUV",
-    "numericCode": 798,
-    "latitude": -8,
-    "longitude": 178
-  },
-  {
     "country": "Uganda",
     "countryCode": "UG",
     "countryCode3": "UGA",
@@ -1894,14 +1822,6 @@
     "numericCode": 840,
     "latitude": 38,
     "longitude": -97
-  },
-  {
-    "country": "United States Minor Outlying Islands",
-    "countryCode": "UM",
-    "countryCode3": "UMI",
-    "numericCode": 581,
-    "latitude": 19.2833,
-    "longitude": 166.6
   },
   {
     "country": "Uruguay",

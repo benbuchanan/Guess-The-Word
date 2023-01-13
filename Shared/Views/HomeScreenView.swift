@@ -20,7 +20,7 @@ struct HomeScreenView: View {
     var body: some View {
         // Option to choose between 4, 5, or 6 letter games
         GeometryReader { metrics in
-            let fontSize = metrics.size.width / 25
+            let fontSize = metrics.size.width / 20
             ZStack {
                 VStack {
                     HStack {
@@ -31,21 +31,16 @@ struct HomeScreenView: View {
                             }
                         }) {
                             ZStack {
-                                Circle()
-                                    .fill(colorScheme == .dark ? darkGray : lightGray)
-                                    .frame(width: 35, height: 35)
                                 Text("?")
-                                    .font(.title2)
+                                    .font(.title)
                                     .foregroundColor(colorScheme == .dark ? .white : .black)
-                                    .frame(width: 20, height: 20)
+                                    .frame(width: 35, height: 35)
                             }.padding(.trailing, 20).padding(.top, 20)
                         }
                     }
                     Spacer()
-//                    Text("WordGuessr").font(.largeTitle)
-//                    Image("WordGuessrLogo2")
-//                        .resizable()
-//                        .frame(width: metrics.size.width, height: metrics.size.width)
+                        .frame(height: 20)
+                    
                     // TileViews to say wordguessr
                     VStack {
                         HStack {
@@ -74,7 +69,7 @@ struct HomeScreenView: View {
                         }
                     }
                     Spacer()
-                        .frame(height: metrics.size.height / 3)
+                        .frame(height: metrics.size.height / 4)
                     VStack(spacing: 15) {
                         HStack(spacing: 15) {
                             Spacer()
@@ -243,99 +238,101 @@ struct HelpView: View {
         if showHelp {
             ZStack {
                 GeometryReader { metrics in
-                    ZStack {
-                        VStack {
-                            HStack {
-                                Spacer()
-                                Button(action: {
-                                    self.showHelp = false
-                                }) {
-                                    ZStack {
-                                        Circle()
-                                            .fill(darkDark)
-                                            .frame(width: 35, height: 35)
-                                        Text("X")
-    //                                        .font(.title2)
-                                            .font(AppFont.mediumFont(fontSize: 20))
-                                            .foregroundColor(.white)
-                                            .frame(width: 20, height: 20)
-                                    }.padding(20)
+                        ZStack {
+                                HStack {
+                                    Spacer()
+                                    Button(action: {
+                                        self.showHelp = false
+                                    }) {
+                                        ZStack {
+                                            Circle()
+                                                .fill(darkDark)
+                                                .frame(width: 35, height: 35)
+                                            Text("X")
+                                                .font(AppFont.mediumFont(fontSize: 20))
+                                                .foregroundColor(.white)
+                                                .frame(width: 20, height: 20)
+                                        }.padding(.top, 20).padding(.trailing, 20)
+                                    }
                                 }
+                        }
+                    VStack {
+                        VStack {
+                            Spacer()
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text("Guess the word in six attempts. Hit the \"Enter\" button to submit your guess.")
+                                    .font(AppFont.mediumFont(fontSize: 20))
+                                    .padding(10)
+                                    .minimumScaleFactor(0.5)
+                                Text("The tiles will change colors after each guess to show you how close you are to the correct word.")
+                                    .font(AppFont.mediumFont(fontSize: 20))
+                                    .padding(10)
+                                    .minimumScaleFactor(0.5)
+                            }.padding(.bottom)
+                            
+                            VStack(alignment: .center) {
+                                HStack {
+                                    TileView(tile: LetterWithStatus(letter: "R", status: Status.correct))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    TileView(tile: LetterWithStatus(letter: "O", status: Status.normal))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    TileView(tile: LetterWithStatus(letter: "U", status: Status.normal))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    TileView(tile: LetterWithStatus(letter: "T", status: Status.normal))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    TileView(tile: LetterWithStatus(letter: "E", status: Status.normal))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    
+                                }
+                                Text("The **R** is in the correct position.")
+                                    .font(AppFont.regularFont(fontSize: 16))
+                                    .padding(.bottom, 10)
+                            }
+                            
+                            VStack(alignment: .center) {
+                                HStack {
+                                    TileView(tile: LetterWithStatus(letter: "P", status: Status.normal))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    TileView(tile: LetterWithStatus(letter: "L", status: Status.incorrectPlacement))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    TileView(tile: LetterWithStatus(letter: "A", status: Status.normal))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    TileView(tile: LetterWithStatus(letter: "C", status: Status.normal))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    TileView(tile: LetterWithStatus(letter: "E", status: Status.normal))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    
+                                }
+                                Text("The **L** is in the word but in the wrong position.")
+                                    .font(AppFont.regularFont(fontSize: 16))
+                                    .padding(.bottom, 10)
+                            }
+                            
+                            VStack(alignment: .center) {
+                                HStack {
+                                    TileView(tile: LetterWithStatus(letter: "M", status: Status.normal))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    TileView(tile: LetterWithStatus(letter: "E", status: Status.normal))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    TileView(tile: LetterWithStatus(letter: "A", status: Status.incorrect))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    TileView(tile: LetterWithStatus(letter: "N", status: Status.normal))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    TileView(tile: LetterWithStatus(letter: "S", status: Status.normal))
+                                        .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
+                                    
+                                }
+                                Text("The **A** is not in the word at all.")
+                                    .font(AppFont.regularFont(fontSize: 16))
+                                    .padding(.bottom, 10)
                             }
                             Spacer()
                         }
-                    }
-                    VStack {
-                        Spacer()
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("Guess the word in six attempts. Hit the \"Enter\" button to submit your guess.")
-                                .font(AppFont.regularFont(fontSize: 16))
-                                .padding(10)
-                            Text("The tiles will change colors after each guess to show you how close you are to the correct word.")
-                                .font(AppFont.regularFont(fontSize: 16))
-                                .padding(10)
-                        }.padding(.bottom)
-                                                
-                        VStack(alignment: .leading) {
-                            HStack {
-                                TileView(tile: LetterWithStatus(letter: "R", status: Status.correct))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                TileView(tile: LetterWithStatus(letter: "O", status: Status.normal))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                TileView(tile: LetterWithStatus(letter: "U", status: Status.normal))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                TileView(tile: LetterWithStatus(letter: "T", status: Status.normal))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                TileView(tile: LetterWithStatus(letter: "E", status: Status.normal))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                
-                            }
-                            Text("The **R** is in the correct position.")
-                                .font(AppFont.regularFont(fontSize: 16))
-                                .padding(.bottom, 10)
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            HStack {
-                                TileView(tile: LetterWithStatus(letter: "P", status: Status.normal))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                TileView(tile: LetterWithStatus(letter: "L", status: Status.incorrectPlacement))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                TileView(tile: LetterWithStatus(letter: "A", status: Status.normal))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                TileView(tile: LetterWithStatus(letter: "C", status: Status.normal))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                TileView(tile: LetterWithStatus(letter: "E", status: Status.normal))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                
-                            }
-                            Text("The **L** is in the word but in the wrong position.")
-                                .font(AppFont.regularFont(fontSize: 16))
-                                .padding(.bottom, 10)
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            HStack {
-                                TileView(tile: LetterWithStatus(letter: "M", status: Status.normal))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                TileView(tile: LetterWithStatus(letter: "E", status: Status.normal))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                TileView(tile: LetterWithStatus(letter: "A", status: Status.incorrect))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                TileView(tile: LetterWithStatus(letter: "N", status: Status.normal))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                TileView(tile: LetterWithStatus(letter: "S", status: Status.normal))
-                                    .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                
-                            }
-                            Text("The **A** is not in the word at all.")
-                                .font(AppFont.regularFont(fontSize: 16))
-                                .padding(.bottom, 10)
-                        }
-                        Spacer()
-                    }.frame(width: metrics.size.width, height: metrics.size.height)
+                        .padding()
+                    }.padding(.top, 30)
                 }
             }
+            .padding(10)
             .frame(width: self.width, height: self.height)
             .background(colorScheme == .dark ? darkGray : lightGray)
             .cornerRadius(30)

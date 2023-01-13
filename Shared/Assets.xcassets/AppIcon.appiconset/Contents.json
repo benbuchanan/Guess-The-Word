@@ -1,175 +1,175 @@
 {
   "images" : [
     {
-      "filename" : "appicon-boxes-20@2x.png",
+      "filename" : "appicon2-20@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
-      "filename" : "appicon-boxes-20@3x.png",
+      "filename" : "appicon2-20@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "20x20"
     },
     {
-      "filename" : "appicon-boxes-29.png",
+      "filename" : "appicon2-29.png",
       "idiom" : "iphone",
       "scale" : "1x",
       "size" : "29x29"
     },
     {
-      "filename" : "appicon-boxes-29@2x.png",
+      "filename" : "appicon2-29@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
-      "filename" : "appicon-boxes-29@3x.png",
+      "filename" : "appicon2-29@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "29x29"
     },
     {
-      "filename" : "appicon-boxes-40@2x.png",
+      "filename" : "appicon2-40@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "appicon-boxes-40@3x.png",
+      "filename" : "appicon2-40@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "40x40"
     },
     {
-      "filename" : "appicon-boxes-60@2x.png",
+      "filename" : "appicon2-60@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
-      "filename" : "appicon-boxes-60@3x.png",
+      "filename" : "appicon2-60@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
     },
     {
-      "filename" : "appicon-boxes-21.png",
+      "filename" : "appicon2-20.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "20x20"
     },
     {
-      "filename" : "appicon-boxes-20@2x-1.png",
+      "filename" : "appicon2-20@2x 1.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
-      "filename" : "appicon-boxes-30.png",
+      "filename" : "appicon2-29 1.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "29x29"
     },
     {
-      "filename" : "appicon-boxes-29@2x-1.png",
+      "filename" : "appicon2-29@2x 1.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
-      "filename" : "appicon-boxes-41.png",
+      "filename" : "appicon2-40.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "40x40"
     },
     {
-      "filename" : "appicon-boxes-40@2x-1.png",
+      "filename" : "appicon2-40@2x 1.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "appicon-boxes-77.png",
+      "filename" : "appicon2-76.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "76x76"
     },
     {
-      "filename" : "appicon-boxes-76@2x-1.png",
+      "filename" : "appicon2-76@2x.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "76x76"
     },
     {
-      "filename" : "appicon-boxes-83.5@2x-1.png",
+      "filename" : "appicon2-83.5@2x.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "83.5x83.5"
     },
     {
-      "filename" : "appicon-boxes-1025.png",
+      "filename" : "appicon2-1024.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
     },
     {
-      "filename" : "appicon-boxes-16.png",
+      "filename" : "appicon2-16.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "16x16"
     },
     {
-      "filename" : "appicon-boxes-32.png",
+      "filename" : "appicon2-32.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "16x16"
     },
     {
-      "filename" : "appicon-boxes-33.png",
+      "filename" : "appicon2-32 1.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "32x32"
     },
     {
-      "filename" : "appicon-boxes-64.png",
+      "filename" : "appicon2-64.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "32x32"
     },
     {
-      "filename" : "appicon-boxes-128.png",
+      "filename" : "appicon2-128.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "128x128"
     },
     {
-      "filename" : "appicon-boxes-256.png",
+      "filename" : "appicon2-256.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "128x128"
     },
     {
-      "filename" : "appicon-boxes-257.png",
+      "filename" : "appicon2-256 1.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "256x256"
     },
     {
-      "filename" : "appicon-boxes-512.png",
+      "filename" : "appicon2-512 1.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "256x256"
     },
     {
-      "filename" : "appicon-boxes-513.png",
+      "filename" : "appicon2-512.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "512x512"
     },
     {
-      "filename" : "appicon-boxes-1026.png",
+      "filename" : "appicon2-1024 2.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "512x512"

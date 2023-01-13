@@ -11,6 +11,8 @@ struct LetterWithStatus {
     var status: Status
     var scale: Double = 1
     var flipped: Bool = false
+    var invalid: Bool = false
+    var submittedIncorrectly: Int = 0
 }
 
 struct AppFont {
@@ -43,6 +45,18 @@ struct Country: Identifiable, Decodable {
     var numericCode: Int
     var latitude: Double
     var longitude: Double
+}
+
+struct Shake: GeometryEffect {
+    var amount: CGFloat = 10
+    var shakesPerUnit = 3
+    var animatableData: CGFloat
+
+    func effectValue(size: CGSize) -> ProjectionTransform {
+        ProjectionTransform(CGAffineTransform(translationX:
+            amount * sin(animatableData * .pi * CGFloat(shakesPerUnit)),
+            y: 0))
+    }
 }
 
 var countries: [Country] = load("countrydata.json")

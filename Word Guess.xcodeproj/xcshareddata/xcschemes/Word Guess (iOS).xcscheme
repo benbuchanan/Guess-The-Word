@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1320"
+   LastUpgradeVersion = "1420"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "88E2579B27A7388C00A364A1"
                BuildableName = "Word Guess.app"
-               BlueprintName = "Word Guess (iOS)"
+               BlueprintName = "Word Guessr (iOS)"
                ReferencedContainer = "container:Word Guess.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,7 +46,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "88E2579B27A7388C00A364A1"
             BuildableName = "Word Guess.app"
-            BlueprintName = "Word Guess (iOS)"
+            BlueprintName = "Word Guessr (iOS)"
             ReferencedContainer = "container:Word Guess.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -69,7 +69,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "88E2579B27A7388C00A364A1"
             BuildableName = "Word Guess.app"
-            BlueprintName = "Word Guess (iOS)"
+            BlueprintName = "Word Guessr (iOS)"
             ReferencedContainer = "container:Word Guess.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

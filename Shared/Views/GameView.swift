@@ -66,7 +66,7 @@ struct GameView: View {
                 VStack(spacing: 5) {
                     // Title
                     HStack {
-                        Text("Word Guessr")
+                        Text("WG")
                             .font(AppFont.regularFont(fontSize: 30))
                             .foregroundColor(colorScheme == .dark ? mainColor : secondaryColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -78,11 +78,9 @@ struct GameView: View {
                             }
                         }) {
                             ZStack {
-                                Circle()
-                                    .fill(colorScheme == .dark ? darkGray : lightGray)
                                 Image(colorScheme == .dark ? "graph-white" : "graph-dark")
                                     .resizable()
-                                    .frame(width: metrics.size.height / 50, height: metrics.size.height / 50)
+                                    .frame(width: metrics.size.height / 35, height: metrics.size.height / 35)
                             }.padding(.trailing, 5)
                         }
                         
@@ -92,11 +90,9 @@ struct GameView: View {
                             }
                         }) {
                             ZStack {
-                                Circle()
-                                    .fill(colorScheme == .dark ? darkGray : lightGray)
                                 Image(colorScheme == .dark ? "home-white" : "home-dark")
                                     .resizable()
-                                    .frame(width: metrics.size.height / 50, height: metrics.size.height / 50)
+                                    .frame(width: metrics.size.height / 35, height: metrics.size.height / 35)
                             }.padding(.trailing, 20)
                         }
                     }
@@ -104,36 +100,41 @@ struct GameView: View {
                     
                     // Tiles
                     Spacer()
-                    ForEach(0...5, id: \.self) { i in
-                        GeometryReader { gtest in
-                            HStack {
-                                Spacer()
-                                HStack(spacing: 5) {
-                                    ForEach(0...self.wordLength - 1, id: \.self) { j in
-                                        TileView(tile: self.guesses[i][j])
-                                            .frame(width: min(gtest.size.height, gtest.size.width / CGFloat(self.wordLength + 1)), height: min(gtest.size.height, gtest.size.width / CGFloat(self.wordLength + 1)))
+                    GeometryReader { gtest in
+                        VStack {
+                            ForEach(0...5, id: \.self) { i in
+                                HStack {
+                                    Spacer()
+                                    HStack(spacing: 5) {
+                                        ForEach(0...self.wordLength - 1, id: \.self) { j in
+                                            TileView(tile: self.guesses[i][j])
+                                                .frame(width: min(gtest.size.height / 6.5, gtest.size.width / CGFloat(self.wordLength + 1)), height: min(gtest.size.height / 6.5, gtest.size.width / CGFloat(self.wordLength + 1)))
+                                        }
                                     }
+                                    Spacer()
                                 }
-                                Spacer()
                             }
                         }
                     }
-                    .frame(maxHeight: 100)
                     Spacer()
+                    
+                    Rectangle()
+                        .opacity(0)
+                        .frame(width: metrics.size.width, height: 50)
                     
                     // Keyboard
                     Spacer()
                     VStack {
                         HStack(spacing: 5) {
                             ForEach(0...9, id: \.self) { i in
-                                KeyboardLetterView(kbLetter: self.keyboardLetters[i], width: metrics.size.width / 11.5).onTapGesture {
+                                KeyboardLetterView(kbLetter: self.keyboardLetters[i], width: metrics.size.width / 11.5, fontSize: metrics.size.width / 25).onTapGesture {
                                     inputLetter(letter: self.keyboardLetters[i].letter)
                                 }
                             }
                         }
                         HStack(spacing: 5) {
                             ForEach(10...18, id: \.self) { i in
-                                KeyboardLetterView(kbLetter: self.keyboardLetters[i], width: metrics.size.width / 11.5).onTapGesture {
+                                KeyboardLetterView(kbLetter: self.keyboardLetters[i], width: metrics.size.width / 11.5, fontSize: metrics.size.width / 25).onTapGesture {
                                     inputLetter(letter: self.keyboardLetters[i].letter)
                                 }
                             }
@@ -145,12 +146,12 @@ struct GameView: View {
                                         .foregroundColor(colorScheme == .dark ? darkGray : lightGray)
                                         .frame(width: metrics.size.width / 8, height: metrics.size.width / 11.5 * 1.5)
                                         .cornerRadius(metrics.size.width / 11.5 / 5)
-                                    Text("Enter")
+                                    Text("Enter").font(.system(size: metrics.size.width / 25))
                                 }
                             }
                             .foregroundColor(colorScheme == .dark ? .white : .black)
                             ForEach(19...25, id: \.self) { i in
-                                KeyboardLetterView(kbLetter: self.keyboardLetters[i], width: metrics.size.width / 11.5).onTapGesture {
+                                KeyboardLetterView(kbLetter: self.keyboardLetters[i], width: metrics.size.width / 11.5, fontSize: metrics.size.width / 25).onTapGesture {
                                     inputLetter(letter: self.keyboardLetters[i].letter)
                                 }
                             }
@@ -168,6 +169,10 @@ struct GameView: View {
                             .foregroundColor(colorScheme == .dark ? .white : .black)
                         }
                     }
+                    Rectangle()
+                        .opacity(0)
+                        .frame(height:metrics.size.width / 11.5 * 1.5)
+                    Spacer()
                 }
                 .frame(maxWidth: metrics.size.width, maxHeight: metrics.size.height)
                 
@@ -240,8 +245,11 @@ struct GameView: View {
         let isValidGuess = isValidGuess(guess: activeGuess)
         
         if !isValidGuess.0 {
-            self.warningText = isValidGuess.1
-            self.showWarningView = true
+            for i in 0..<self.guesses[self.currentGuess].count {
+                withAnimation(.default) {
+                    self.guesses[self.currentGuess][i].submittedIncorrectly += 1
+                }
+            }
             return
         }
         
@@ -356,6 +364,14 @@ struct GameView: View {
                         self.guesses[self.currentGuess][i].scale = 1
                     }
                 }
+                if i+1 == self.wordLength {
+                    let isValidGuess = isValidGuess(guess: self.guesses[self.currentGuess])
+                    if !isValidGuess.0 {
+                        for j in 0..<self.guesses[self.currentGuess].count {
+                            self.guesses[self.currentGuess][j].invalid = true
+                        }
+                    }
+                }
                 return
             }
         }
@@ -363,6 +379,7 @@ struct GameView: View {
     
     func deleteLetter() {
         for i in 0..<self.guesses[self.currentGuess].count {
+            self.guesses[self.currentGuess][i].invalid = false
             if self.guesses[self.currentGuess][i].letter == "" && i > 0 {
                 self.guesses[self.currentGuess][i-1].letter = ""
                 return
