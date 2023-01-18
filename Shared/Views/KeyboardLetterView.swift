@@ -13,14 +13,15 @@ struct KeyboardLetterView: View {
     var kbLetter: LetterWithStatus
     var width: Double
     var fontSize: Double
+    var colorBlindMode = UserDefaults.standard.bool(forKey: "colorBlindMode")
     var kbColor: Color {
         switch kbLetter.status {
         case Status.normal:
             return colorScheme == .dark ? darkGray : lightGray
         case Status.correct:
-            return Color.green
+            return Color(UIColor.systemGreen)
         case Status.incorrectPlacement:
-            return Color(UIColor.systemCyan)
+            return Color(colorBlindMode ? UIColor.systemCyan : UIColor.systemOrange)
         case Status.incorrect:
             return colorScheme == .dark ? darkDark : lightIncorrect
         }
@@ -30,7 +31,7 @@ struct KeyboardLetterView: View {
         ZStack {
             Rectangle()
                 .foregroundColor(kbColor)
-                .frame(width: self.width, height: self.width * 1.5)
+                .frame(width: self.width, height: self.width * 1.3)
                 .cornerRadius(self.width / 5)
             Text(kbLetter.letter)
                 .font(.system(size: self.fontSize))

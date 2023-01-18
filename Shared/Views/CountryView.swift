@@ -37,124 +37,129 @@ struct CountryView: View {
     }
         
     var body: some View {
-        ZStack {
-            VStack {
-                HStack {
-                    Text("Country Guessr")
-                        .font(AppFont.regularFont(fontSize: 30))
-                        .foregroundColor(colorScheme == .dark ? mainColor : secondaryColor)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                    Spacer()
-                    Button(action: {
-                        withAnimation(.default) {
-                            self.showHome = true
-                        }
-                    }) {
-                        ZStack {
-                            Circle()
-                                .fill(colorScheme == .dark ? darkGray : lightGray)
-                                .frame(width: 35, height: 35)
-                            Image(colorScheme == .dark ? "home-white" : "home-dark")
-                                .resizable()
-                                .frame(width: 18, height: 18)
-                        }.padding(.trailing, 20)
-                    }
-                }
+        GeometryReader { metrics in
+            ZStack {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color(UIColor.systemCyan))
-                    Image(self.randomCountry.countryCode.lowercased()).resizable().frame(width: self.showSuggestions ? 150 : 225, height: self.showSuggestions ? 150 : 225)
+                    Rectangle().opacity(0)
                 }
-                .frame(width: self.showSuggestions ? 200 : 250, height: self.showSuggestions ? 200 : 250)
-                if !self.showSuggestions {
-                    Spacer()
-                }
+                .ignoresSafeArea()
+                .background(colorScheme == .dark ? Color(.systemGray6) : Color(.systemBackground))
+                
                 VStack {
-                    if self.showSuggestions {
-                        List(self.currentSuggestions, id: \.self) { sug in
-                            Button(action: {
-                                self.suggestionTapped = true
-                                self.guess = sug
+                    HStack {
+                        Text("CG")
+                            .font(AppFont.regularFont(fontSize: 30))
+                            .foregroundColor(mainColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+                        Spacer()
+                        Button(action: {
+                            withAnimation(.default) {
+                                self.showHome = true
+                            }
+                        }) {
+                            ZStack {
+                                Image(colorScheme == .dark ? "home-white" : "home-dark")
+                                    .resizable()
+                                    .frame(width: metrics.size.height / 35, height: metrics.size.height / 35)
+                            }.padding(.trailing, 20)
+                        }
+                    }
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color(UIColor.systemCyan))
+                        Image(self.randomCountry.countryCode.lowercased()).resizable().frame(width: self.showSuggestions ? 150 : 225, height: self.showSuggestions ? 150 : 225)
+                    }
+                    .frame(width: self.showSuggestions ? 200 : 250, height: self.showSuggestions ? 200 : 250)
+                    if !self.showSuggestions {
+                        Spacer()
+                    }
+                    VStack {
+                        if self.showSuggestions {
+                            List(self.currentSuggestions, id: \.self) { sug in
+                                Button(action: {
+                                    self.suggestionTapped = true
+                                    self.guess = sug
+                                    withAnimation(.default) {
+                                        self.showSuggestions = false
+                                    }
+                                }) {
+                                    Text(sug)
+                                }
+                            }
+                            .listStyle(.plain)
+                            .frame(height: 120)
+                        }
+                        if self.showDistance {
+                            HStack {
+                                Text("Incorrect")
+                                    .font(.title3)
+                                    .foregroundColor(Color(UIColor.systemRed))
+                                Text("\(String(format: "%.0f", round(self.distance)))km away")
+                                Image(colorScheme == .dark ? "arrow-white" : "arrow-dark")
+                                    .resizable()
+                                    .rotationEffect(.degrees(self.bearing))
+                                    .frame(width: 25, height: 25)
+                            }
+                        }
+                        TextField("Enter your guess", text: $guess)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .font(.title2)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                            .modifier(TextFieldClearButton(guess: $guess))
+                            .onChange(of: guess) { _ in
+                                if self.roundOver {
+                                    self.roundOver.toggle()
+                                    return
+                                }
+                                if !self.showSuggestions && self.suggestionTapped {
+                                    self.suggestionTapped.toggle()
+                                    return
+                                }
+                                withAnimation(.default) {
+                                    self.showSuggestions = true
+                                }
+                                updateSuggestions()
+                            }
+                            .onSubmit {
+                                print(self.guess)
                                 withAnimation(.default) {
                                     self.showSuggestions = false
                                 }
-                            }) {
-                                Text(sug)
-                            }
-                        }
-                        .listStyle(.plain)
-                        .frame(height: 120)
-                    }
-                    if self.showDistance {
-                        HStack {
-                            Text("Incorrect")
-                                .font(.title3)
-                                .foregroundColor(Color(UIColor.systemRed))
-                            Text("\(String(format: "%.0f", round(self.distance)))km away")
-                            Image(colorScheme == .dark ? "arrow-white" : "arrow-dark")
-                                .resizable()
-                                .rotationEffect(.degrees(self.bearing))
-                                .frame(width: 25, height: 25)
-                        }
-                    }
-                    TextField("Enter your guess", text: $guess)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .font(.title2)
-                        .multilineTextAlignment(.center)
-                        .padding()
-                        .modifier(TextFieldClearButton(guess: $guess))
-                        .onChange(of: guess) { _ in
-                            if self.roundOver {
-                                self.roundOver.toggle()
-                                return
-                            }
-                            if !self.showSuggestions && self.suggestionTapped {
-                                self.suggestionTapped.toggle()
-                                return
-                            }
-                            withAnimation(.default) {
-                                self.showSuggestions = true
-                            }
-                            updateSuggestions()
-                        }
-                        .onSubmit {
-                            print(self.guess)
-                            withAnimation(.default) {
-                                self.showSuggestions = false
-                            }
-                            if self.guess.lowercased() == self.randomCountry.country.lowercased() {
-                                print("CORRECT")
-                                self.roundOver = true
-                                self.showDistance = false
-                                self.guess = ""
-                                self.randomCountry = countries[Int.random(in: 0..<countries.count)]
-                                print(self.randomCountry.country)
-                            } else {
-                                print("WRONG")
-                                // Get guessed country
-                                let guessedCountry = getCountryByName(name: self.guess)
-                                if guessedCountry == nil {
-                                    print("invalid country guessed")
+                                if self.guess.lowercased() == self.randomCountry.country.lowercased() {
+                                    print("CORRECT")
+                                    self.roundOver = true
+                                    self.showDistance = false
+                                    self.guess = ""
+                                    self.randomCountry = countries[Int.random(in: 0..<countries.count)]
+                                    print(self.randomCountry.country)
                                 } else {
-                                    self.distance = calculateDistance(country1: guessedCountry!, country2: self.randomCountry)
-                                    self.bearing = calculateBearing(country1: guessedCountry!, country2: self.randomCountry)
-                                    self.showDistance = true
+                                    print("WRONG")
+                                    // Get guessed country
+                                    let guessedCountry = getCountryByName(name: self.guess)
+                                    if guessedCountry == nil {
+                                        print("invalid country guessed")
+                                    } else {
+                                        self.distance = calculateDistance(country1: guessedCountry!, country2: self.randomCountry)
+                                        self.bearing = calculateBearing(country1: guessedCountry!, country2: self.randomCountry)
+                                        self.showDistance = true
+                                    }
                                 }
                             }
-                        }
+                    }
+                    Spacer()
                 }
-                Spacer()
+                //            VStack {
+                //                Spacer()
+                //
+                //            }
             }
-//            VStack {
-//                Spacer()
-//
-//            }
+            .onAppear() {
+                print(self.randomCountry.country.lowercased())
+            }
+            .transition(.move(edge: .trailing))
         }
-        .onAppear() {
-            print(self.randomCountry.country.lowercased())
-        }
-        .transition(.move(edge: .trailing))
     }
     
     // Update the suggestions list based on the current guess

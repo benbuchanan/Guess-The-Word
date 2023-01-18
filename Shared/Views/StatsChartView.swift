@@ -15,11 +15,13 @@ struct StatsChartView: View {
     
     var body: some View {
         VStack {
-            Text("Distribution").font(AppFont.regularFont(fontSize: self.viewWidth / 18))
             ForEach(0..<self.scoreArray.count, id: \.self) { i in
                 HStack {
-                    Text("\(i + 1)").frame(minWidth: 10)
-                    BarChartCell(value: self.scoreArray[i] != 0 && normalizedValue(index: i) < 0.1 ? 0.1 : normalizedValue(index: i), barColor: self.highlightDistributionBar ? i == self.currentGuess ? secondaryColor : mainColor : mainColor, textValue: String(self.scoreArray[i]))
+                    Text("\(i + 1)")
+                        .font(.headline)
+                        .frame(minWidth: 10)
+                        .padding(.horizontal, 5)
+                    BarChartCell(value: self.scoreArray[i] != 0 && normalizedValue(index: i) < 0.1 ? 0.1 : normalizedValue(index: i), barColor: self.highlightDistributionBar ? i == self.currentGuess ? mainColor : secondaryColor : secondaryColor, textValue: String(self.scoreArray[i]))
                 }
             }
         }
@@ -45,21 +47,31 @@ struct BarChartCell: View {
                          
     var body: some View {
         GeometryReader { metrics in
-            ZStack {
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(barColor)
-                    .scaleEffect(CGSize(width: 1, height: 0.85), anchor: .leading)
-                HStack {
-                    Spacer()
-                    if self.textValue != "0" {
-                        Text(self.textValue)
-                            .padding(.trailing, 10)
-                            .foregroundColor(.white)
+            VStack {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(barColor)
+                        .frame(minHeight: 25)
+                        .frame(maxHeight: metrics.size.height / 3)
+//                        .frame(height: metrics.size.height / 2)
+                    HStack {
+                        Spacer()
+                        if self.textValue != "0" {
+                            Text(self.textValue)
+                                .padding(.trailing, 10)
+                                .foregroundColor(.white)
+                        }
                     }
                 }
-//                    .scaleEffect(CGSize(width: value == 0 ? 0.05 : value, height: 0.75), anchor: .leading)
+                .frame(width: value == 0 ? 15 : metrics.size.width * value)
             }
-            .frame(width: value == 0 ? 15 : metrics.size.width * value)
+            .frame(width: metrics.size.width, height: metrics.size.height, alignment: .leading)
         }
+    }
+}
+
+struct GameView_Preview2: PreviewProvider {
+    static var previews: some View {
+        StatsChartView(scoreArray: [0,1,3,2,1,5], currentGuess: .constant(1), highlightDistributionBar: .constant(false), viewWidth: 10)
     }
 }

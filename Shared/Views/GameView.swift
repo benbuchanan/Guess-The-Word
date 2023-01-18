@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseAnalytics
 
 struct GameView: View {
     
@@ -60,18 +61,24 @@ struct GameView: View {
     var body: some View {
         GeometryReader { metrics in
             ZStack {
+                ZStack {
+                    Rectangle().opacity(0)
+                }
+                .ignoresSafeArea()
+                .background(colorScheme == .dark ? Color(.systemGray6) : Color(.systemBackground))
+
                 // Title, tiles, and keyboard
                 VStack(spacing: 5) {
                     // Title
                     HStack {
                         Text("WG")
                             .font(AppFont.regularFont(fontSize: 30))
-                            .foregroundColor(colorScheme == .dark ? mainColor : secondaryColor)
+                            .foregroundColor(mainColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
                         Spacer()
                         Button(action: {
-                            withAnimation(.default) {
+                            withAnimation(.easeInOut) {
                                 self.showDistribution = true
                             }
                         }) {
@@ -81,6 +88,7 @@ struct GameView: View {
                                     .frame(width: metrics.size.height / 35, height: metrics.size.height / 35)
                             }.padding(.trailing, 5)
                         }
+                        .disabled(self.showGameOver)
                         
                         Button(action: {
                             withAnimation(.default) {
@@ -122,7 +130,7 @@ struct GameView: View {
                     
                     // Keyboard
                     Spacer()
-                    VStack {
+                    VStack(spacing: 10) {
                         HStack(spacing: 5) {
                             ForEach(0...9, id: \.self) { i in
                                 KeyboardLetterView(kbLetter: self.keyboardLetters[i], width: metrics.size.width / 11.5, fontSize: metrics.size.width / 25).onTapGesture {
@@ -142,7 +150,7 @@ struct GameView: View {
                                 ZStack {
                                     Rectangle()
                                         .foregroundColor(colorScheme == .dark ? darkGray : lightGray)
-                                        .frame(width: metrics.size.width / 8, height: metrics.size.width / 11.5 * 1.5)
+                                        .frame(width: metrics.size.width / 8, height: metrics.size.width / 11.5 * 1.3)
                                         .cornerRadius(metrics.size.width / 11.5 / 5)
                                     Text("Enter").font(.system(size: metrics.size.width / 25))
                                 }
@@ -157,7 +165,7 @@ struct GameView: View {
                                 ZStack {
                                     Rectangle()
                                         .foregroundColor(colorScheme == .dark ? darkGray : lightGray)
-                                        .frame(width: metrics.size.width / 8, height: metrics.size.width / 11.5 * 1.5)
+                                        .frame(width: metrics.size.width / 8, height: metrics.size.width / 11.5 * 1.3)
                                         .cornerRadius(metrics.size.width / 11.5 / 5)
                                     Image(colorScheme == .dark ? "backspace-white" : "backspace-dark")
                                         .resizable()
@@ -174,49 +182,7 @@ struct GameView: View {
                 }
                 .frame(maxWidth: metrics.size.width, maxHeight: metrics.size.height)
                 
-                // Dim background for the game over screen
-                if self.showGameOver || self.showDistribution {
-                    Color.black
-                        .opacity(0.6)
-                        .ignoresSafeArea()
-                }
-                
-                if self.showDistribution {
-                    ZStack {
-                        VStack {
-                            HStack {
-                                Spacer()
-                                Button(action: {
-                                    self.showDistribution = false
-                                }) {
-                                    ZStack {
-                                        Circle()
-                                            .fill(darkDark)
-                                            .frame(width: 35, height: 35)
-                                        Text("X")
-                                            .font(AppFont.mediumFont(fontSize: 20))
-                                            .foregroundColor(.white)
-                                            .frame(width: 20, height: 20)
-                                    }.padding(20)
-                                }
-                            }
-                            Spacer()
-                        }
-                        GeometryReader { geo in
-                            VStack {
-                                VStack(alignment: .leading) {
-                                    StatsChartView(scoreArray: self.scoreArray, currentGuess: $currentGuess, highlightDistributionBar: .constant(false), viewWidth: geo.size.width)
-                                }
-                                .padding()
-                                .frame(width: geo.size.width * 0.9, height: geo.size.height * 0.8)
-                            }.frame(width: geo.size.width, height: geo.size.height)
-                        }
-                    }
-                    .frame(width: metrics.size.width * 0.85, height: metrics.size.height / 2)
-                    .background(colorScheme == .dark ? darkGray : lightGray)
-                    .cornerRadius(30)
-                    .transition(.scale)
-                }
+                DistributionView(scoreArray: self.$scoreArray, currentGuess: self.$currentGuess, showDistribution: self.$showDistribution)
                 
                 GameOverView(showGameOver: $showGameOver, gameOverTitleText: $gameOverTitleText, targetWord: $targetWord, showHome: $showHome, scoreArray: $scoreArray, currentGuess: $currentGuess, highlightDistributionBar: $highlightDistributionBar, width: metrics.size.width - 50, height: metrics.size.height - 150, wordReported: $wordReported, newGameFunc: startNewGame)
             }
@@ -417,6 +383,100 @@ struct GameView: View {
     }
 }
 
+struct DistributionView: View {
+    @Environment(\.colorScheme) var colorScheme
+
+    @Binding var scoreArray: [Int]
+    @Binding var currentGuess: Int
+    @Binding var showDistribution: Bool
+    
+    @State private var curHeight: CGFloat = 500
+    let heightLimit: CGFloat = 500
+    
+    var body: some View {
+        // Dim background for the game over screen
+        ZStack(alignment: .bottom) {
+            if self.showDistribution {
+                Color.black
+                    .opacity(0.3)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation(.easeInOut) {
+                            self.showDistribution = false
+                        }
+                    }
+                ZStack {
+                    GeometryReader { geo in
+                        ZStack {
+                            VStack {
+                                ZStack {
+                                    Capsule()
+                                        .frame(width: 40, height: 5)
+                                        .padding()
+                                }
+                                .frame(height: 40)
+                                .frame(maxWidth: .infinity)
+                                .gesture(dragGesture)
+                                Spacer()
+                            }
+                            VStack(alignment: .leading) {
+                                StatsChartView(scoreArray: self.scoreArray, currentGuess: $currentGuess, highlightDistributionBar: .constant(false), viewWidth: geo.size.width)
+                            }
+                            .padding(.horizontal, 5)
+                            .frame(width: geo.size.width * 0.9, height: geo.size.height * 0.8)
+                        }
+                        .frame(width: geo.size.width, height: geo.size.height)
+                    }
+                }
+                .frame(height: curHeight)
+                .background(colorScheme == .dark ? Color(.systemGray5) : Color(.systemBackground))
+                .cornerRadius(20)
+                .transition(.move(edge: .bottom))
+                .gesture(swipeGesture)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+        .ignoresSafeArea()
+    }
+    
+    @State private var prevDragTranslation = CGSize.zero
+    
+    var dragGesture: some Gesture {
+        DragGesture(minimumDistance: 0, coordinateSpace: .global)
+            .onChanged { val in
+                let dragAmount = val.translation.height - prevDragTranslation.height
+                if curHeight > heightLimit || curHeight < heightLimit {
+                    curHeight -= dragAmount / 6
+                } else {
+                    curHeight -= dragAmount
+                }
+                prevDragTranslation = val.translation
+            }
+            .onEnded { val in
+                withAnimation(.easeInOut) {
+                    if curHeight < heightLimit {
+                        self.showDistribution = false
+                    }
+                }
+                prevDragTranslation = .zero
+                withAnimation(.easeInOut(duration: 0.15)) {
+                    curHeight = heightLimit
+                }
+            }
+    }
+    
+    var swipeGesture: some Gesture {
+        DragGesture(minimumDistance: 0, coordinateSpace: .local)
+            .onEnded { val in
+                if val.translation.height > 0 {
+                    withAnimation(.easeInOut) {
+                        self.showDistribution = false
+                    }
+                }
+            }
+    }
+}
+
 struct GameOverView: View {
     @Environment(\.colorScheme) var colorScheme
 
@@ -432,91 +492,227 @@ struct GameOverView: View {
     @Binding var wordReported: Bool
     var newGameFunc: () -> Void
     
+    @State private var minimizeGameOver: Bool = false
+    @State private var dragAddition: CGFloat = 0
+    let dragLimit: CGFloat = 50
+    
     var body: some View {
-        if showGameOver {
-            ZStack {
-                GeometryReader { metrics in
-                    VStack {
-                        Spacer()
-                        
-                        Text(self.gameOverTitleText)
-                            .font(AppFont.mediumFont(fontSize: 25))
-                            .foregroundColor(colorScheme == .dark ? .white : .black)
-                            .padding(.bottom)
-                        
-                        (Text("The word was ")
-                            .font(AppFont.regularFont(fontSize: 20))
-                            .foregroundColor(colorScheme == .dark ? .white : .black)
-                        + Text(self.targetWord.joined(separator: ""))
-                            .font(AppFont.boldFont(fontSize: 20)))
-                            .padding(.bottom, 2)
-                        
-                        Button(action: {
-                            // Report word as firebase analytics event
-                            FirebaseAnalytics.Analytics.logEvent("report_word", parameters: [
-                                "word_length": self.targetWord.joined(separator: "").count,
-                                "word": self.targetWord.joined(separator: "")
-                            ])
-                            
-                            self.wordReported = true
-
-                        }) {
-                            Text("Report Word").font(AppFont.regularFont(fontSize: 15))
-                        }
-                        .disabled(self.wordReported)
-                        
-                        Spacer()
-                        
-                        VStack(alignment: .leading) {
-                            GeometryReader { chart in
-                                StatsChartView(scoreArray: self.scoreArray, currentGuess: $currentGuess, highlightDistributionBar: $highlightDistributionBar, viewWidth: chart.size.width)
+        // Dim background for the game over screen
+        GeometryReader { metrics in
+            ZStack(alignment: .bottom) {
+                if self.showGameOver {
+                    if !self.minimizeGameOver {
+                        Color.black
+                            .opacity(0.3)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                withAnimation(.easeInOut) {
+                                    self.minimizeGameOver = true
+                                }
                             }
-                        }
-                        .padding()
-                        .frame(width: metrics.size.width * 0.9, height: metrics.size.height / 2)
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            self.wordReported = false
-                            self.newGameFunc()
-                        }) {
+                    }
+                    ZStack {
+                        GeometryReader { geo in
                             ZStack {
-                                RoundedRectangle(cornerRadius: 15)
-                                    .fill(secondaryColor)
-                                    .frame(width: metrics.size.width - 100, height: 50)
-                                Text("New word")
-                                    .font(AppFont.regularFont(fontSize: 18))
-                                    .foregroundColor(.white)
+                                VStack() {
+                                    ZStack {
+                                        Capsule()
+                                            .frame(width: 40, height: 5)
+                                            .padding()
+                                    }
+                                    .frame(height: 40)
+                                    .frame(maxWidth: .infinity)
+                                    .contentShape(Rectangle())
+                                    .gesture(dragGesture)
+                                    .simultaneousGesture(
+                                        TapGesture()
+                                            .onEnded {
+                                                withAnimation(.easeInOut) {
+                                                    self.minimizeGameOver.toggle()
+                                                }
+                                            }
+                                    )
+                                    
+                                    if !self.minimizeGameOver {
+                                        
+                                        Text(self.gameOverTitleText)
+                                            .font(.system(.title))
+                                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                                            .padding(.bottom, 10)
+                                        
+                                        (Text("The word was ")
+                                            .font(.system(.title3))
+                                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                                         + Text(self.targetWord.joined(separator: ""))
+                                            .font(.system(.title3).weight(.bold)))
+                                        .padding(.bottom, 2)
+                                        
+                                        Button(action: {
+                                            // Report word as firebase analytics event
+                                            FirebaseAnalytics.Analytics.logEvent("report_word", parameters: [
+                                                "word_length": self.targetWord.joined(separator: "").count,
+                                                "word": self.targetWord.joined(separator: "")
+                                            ])
+                                            
+                                            self.wordReported = true
+                                            
+                                        }) {
+                                            Text("Report Word").font(.system(.caption))
+                                        }
+                                        .disabled(self.wordReported)
+                                        
+                                        StatsChartView(scoreArray: self.scoreArray, currentGuess: $currentGuess, highlightDistributionBar: $highlightDistributionBar, viewWidth: geo.size.width)
+                                            .padding(.vertical)
+                                    }
+                                    
+                                    HStack(spacing: 0) {
+                                        Button(action: {
+                                            withAnimation(.default) {
+                                                self.wordReported = false
+                                                self.minimizeGameOver = false
+                                                self.showHome = true
+                                            }
+                                        }) {
+                                            ZStack {
+                                                Rectangle()
+                                                    .fill(mainColor)
+                                                    .frame(width: metrics.size.width / 2, height: metrics.size.height / 10)
+                                                Text("Home")
+                                                    .font(.system(.title2).weight(.semibold))
+                                                    .foregroundColor(.white)
+                                            }
+                                        }
+                                        
+                                        Rectangle()
+                                            .fill(.white)
+                                            .frame(width: 1, height: metrics.size.height / 10)
+                                        
+                                        Button(action: {
+                                            self.wordReported = false
+                                            self.newGameFunc()
+                                            self.minimizeGameOver = false
+                                        }) {
+                                            ZStack {
+                                                Rectangle()
+                                                    .fill(mainColor)
+                                                    .frame(width: metrics.size.width / 2, height: metrics.size.height / 10)
+                                                Text("New word")
+                                                    .font(.system(.title2).weight(.semibold))
+                                                    .foregroundColor(.white)
+                                            }
+                                        }
+                                    }
+                                }
+                                .padding(.horizontal, 5)
+                                .frame(width: geo.size.width * 0.9)
                             }
+                            .frame(width: geo.size.width, height: geo.size.height)
                         }
-                        
-                        Button(action: {
-                            withAnimation(.default) {
-                                self.wordReported = false
-                                self.showHome = true
-                            }
-                        }) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 15)
-                                    .fill(secondaryColor)
-                                    .frame(width: metrics.size.width - 100, height: 50)
-                                Text("Home")
-                                    .font(AppFont.regularFont(fontSize: 18))
-                                    .foregroundColor(.white)
-                            }
-                        }
-                        Spacer()
-                    }.frame(width: metrics.size.width, height: metrics.size.height)
+                    }
+                    .frame(height: self.minimizeGameOver ? metrics.size.height * 0.15 : metrics.size.height * 0.7 + dragAddition)
+                    .background(colorScheme == .dark ? Color(.systemGray5) : Color(.systemBackground))
+                    .cornerRadius(15, corners: [.topLeft, .topRight])
+                    .transition(.move(edge: .bottom))
+                    .gesture(swipeGesture)
+                    .shadow(color: darkGrayBackgroundColor, radius: self.minimizeGameOver ? 20 : 0)
                 }
             }
-            .frame(width: self.width, height: self.height)
-            .background(colorScheme == .dark ? darkGray : lightGray)
-            .cornerRadius(30)
-            .transition(.scale)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            .ignoresSafeArea()
         }
     }
+    
+    @State private var prevDragTranslation = CGSize.zero
+    
+    var dragGesture: some Gesture {
+        if self.minimizeGameOver {
+            return DragGesture(minimumDistance: 0, coordinateSpace: .global)
+                .onChanged { val in
+                    let dragAmount = val.translation.height - prevDragTranslation.height
+                    if dragAmount < 0 {
+                        dragAddition -= dragAmount / 6
+                    }
+                    prevDragTranslation = val.translation
+                }
+                .onEnded { val in
+                    withAnimation(.easeInOut) {
+                        if dragAddition > 0 {
+                            self.minimizeGameOver = false
+                        }
+                    }
+                    prevDragTranslation = .zero
+                    withAnimation(.easeInOut(duration: 0.15)) {
+                        dragAddition = 0
+                    }
+                }
+        } else {
+            return DragGesture(minimumDistance: 0, coordinateSpace: .global)
+                .onChanged { val in
+                    let dragAmount = val.translation.height - prevDragTranslation.height
+                    if abs(dragAddition) > dragLimit {
+                        dragAddition -= dragAmount / 6
+                    } else {
+                        dragAddition -= dragAmount
+                    }
+                    prevDragTranslation = val.translation
+                }
+                .onEnded { val in
+                    withAnimation(.easeInOut) {
+                        if dragAddition < 0 {
+                            self.minimizeGameOver = true
+                        }
+                    }
+                    prevDragTranslation = .zero
+                    withAnimation(.easeInOut(duration: 0.15)) {
+                        dragAddition = 0
+                    }
+                }
+        }
+    }
+    
+    var swipeGesture: some Gesture {
+        if self.minimizeGameOver {
+            return DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                .onEnded { val in
+                    if val.translation.height < 0 {
+                        // This is a swipe up
+                        withAnimation(.easeInOut) {
+                            self.minimizeGameOver = false
+                        }
+                    }
+                }
+        } else {
+            return DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                .onEnded { val in
+                    if val.translation.height > 0 {
+                        // This is a swipe down
+                        withAnimation(.easeInOut) {
+                            self.minimizeGameOver = true
+                        }
+                    }
+                }
+        }
+        
+    }
 }
+
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape( RoundedCorner(radius: radius, corners: corners) )
+    }
+}
+
+struct RoundedCorner: Shape {
+
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
+    }
+}
+
 
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {

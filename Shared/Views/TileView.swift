@@ -11,14 +11,16 @@ struct TileView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var tile: LetterWithStatus
+    var overrideColor: Color? = nil
+    var colorBlindMode = UserDefaults.standard.bool(forKey: "colorBlindMode")
     var tileColor: Color {
         switch tile.status {
         case Status.normal:
             return Color.black.opacity(0)
         case Status.correct:
-            return Color.green
+            return Color(UIColor.systemGreen)
         case Status.incorrectPlacement:
-            return Color(UIColor.systemCyan)
+            return Color(colorBlindMode ? UIColor.systemCyan : UIColor.systemOrange)
         case Status.incorrect:
             return colorScheme == .dark ? darkDark : lightIncorrect
         }
@@ -27,8 +29,8 @@ struct TileView: View {
     var body: some View {
         ZStack {
             Rectangle()
-                .fill(tileColor)
-                .border(tile.status != Status.normal ? tileColor : tile.letter != "" ? colorScheme == .dark ? darkBorder : lightBorder : colorScheme == .dark ? darkDark : lightGray, width: 2)
+                .fill(overrideColor != nil ? overrideColor! : tileColor)
+                .border(overrideColor != nil ? overrideColor! : tile.status != Status.normal ? tileColor : tile.letter != "" ? colorScheme == .dark ? darkBorder : lightBorder : colorScheme == .dark ? darkDark : lightGray, width: 2)
                 .rotation3DEffect(Angle(degrees: tile.flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
             Text(tile.letter)
                 .foregroundColor(tile.invalid ? Color.red : tile.status != Status.normal ? .white : colorScheme == .dark ? .white : .black)
