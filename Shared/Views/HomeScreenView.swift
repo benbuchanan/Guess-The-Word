@@ -195,7 +195,7 @@ struct HomeScreenView: View {
                                 }.frame(width: cardWidth)
                             }
                             .frame(height: metrics.size.height * 0.4)
-                            .padding(.bottom, 50)
+                            .padding(.vertical, 50)
                             .padding(.horizontal, (metrics.size.width / 2) - (cardWidth / 2))
                             .onAppear() {
                                 value.scrollTo(1, anchor: .center)

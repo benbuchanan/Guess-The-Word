@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "88E2579B27A7388C00A364A1"
-               BuildableName = "Word Guess.app"
+               BuildableName = "Word Guessr.app"
                BlueprintName = "Word Guessr (iOS)"
                ReferencedContainer = "container:Word Guess.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "88E2579B27A7388C00A364A1"
-            BuildableName = "Word Guess.app"
+            BuildableName = "Word Guessr.app"
             BlueprintName = "Word Guessr (iOS)"
             ReferencedContainer = "container:Word Guess.xcodeproj">
          </BuildableReference>
@@ -68,7 +68,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "88E2579B27A7388C00A364A1"
-            BuildableName = "Word Guess.app"
+            BuildableName = "Word Guessr.app"
             BlueprintName = "Word Guessr (iOS)"
             ReferencedContainer = "container:Word Guess.xcodeproj">
          </BuildableReference>
