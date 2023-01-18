@@ -124,10 +124,6 @@ struct GameView: View {
                     }
                     Spacer()
                     
-                    Rectangle()
-                        .opacity(0)
-                        .frame(width: metrics.size.width, height: 50)
-                    
                     // Keyboard
                     Spacer()
                     VStack(spacing: 10) {

@@ -125,7 +125,7 @@ struct HomeScreenView: View {
                                     })
                                     .id(0)
                                     .scaleEffect(x: 1, y: shouldScaleDown ? 0.9 : 1)
-                                    .shadow(color: Color(.lightGray), radius: !shouldScaleDown ? 20 : 0, x: 0, y: !shouldScaleDown ? 10 : 0)
+                                    .shadow(color: colorScheme == .dark ? Color(.systemGray4) : Color(.lightGray), radius: !shouldScaleDown ? 20 : 0, x: 0, y: !shouldScaleDown ? 10 : 0)
                                     .animation(.easeInOut(duration: 0.25), value: shouldScaleDown)
                                 }.frame(width: cardWidth)
                                 
@@ -147,7 +147,7 @@ struct HomeScreenView: View {
                                     })
                                     .id(1)
                                     .scaleEffect(x: 1, y: shouldScaleDown ? 0.9 : 1)
-                                    .shadow(color: Color(.lightGray), radius: !shouldScaleDown ? 20 : 0, x: 0, y: !shouldScaleDown ? 10 : 0)
+                                    .shadow(color: colorScheme == .dark ? Color(.systemGray4) : Color(.lightGray), radius: !shouldScaleDown ? 20 : 0, x: 0, y: !shouldScaleDown ? 10 : 0)
                                     .animation(.easeInOut(duration: 0.25), value: shouldScaleDown)
                                 }.frame(width: cardWidth)
 
@@ -170,7 +170,7 @@ struct HomeScreenView: View {
                                     })
                                     .id(2)
                                     .scaleEffect(x: 1, y: shouldScaleDown ? 0.9 : 1)
-                                    .shadow(color: Color(.lightGray), radius: !shouldScaleDown ? 20 : 0, x: 0, y: !shouldScaleDown ? 10 : 0)
+                                    .shadow(color: colorScheme == .dark ? Color(.systemGray4) : Color(.lightGray), radius: !shouldScaleDown ? 20 : 0, x: 0, y: !shouldScaleDown ? 10 : 0)
                                     .animation(.easeInOut(duration: 0.25), value: shouldScaleDown)
                                 }.frame(width: cardWidth)
                                 
@@ -190,7 +190,7 @@ struct HomeScreenView: View {
                                     })
                                     .id(3)
                                     .scaleEffect(x: 1, y: shouldScaleDown ? 0.9 : 1)
-                                    .shadow(color: Color(.lightGray), radius: !shouldScaleDown ? 20 : 0, x: 0, y: !shouldScaleDown ? 10 : 0)
+                                    .shadow(color: colorScheme == .dark ? Color(.systemGray4) : Color(.lightGray), radius: !shouldScaleDown ? 20 : 0, x: 0, y: !shouldScaleDown ? 10 : 0)
                                     .animation(.easeInOut(duration: 0.25), value: shouldScaleDown)
                                 }.frame(width: cardWidth)
                             }
