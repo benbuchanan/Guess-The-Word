@@ -29,9 +29,10 @@ struct HomeScreenView: View {
         // Option to choose between 4, 5, or 6 letter games
         return (
         GeometryReader { metrics in
-            let fontSize = metrics.size.width / 15
-            let cardWidth = metrics.size.width * 0.65
+            let cardWidth = min(400, metrics.size.width * 0.65)
             let cardSpacing = cardWidth / 15
+            let fontSize = cardWidth / 8
+            let cardIconSize = cardWidth / 4
             ZStack {
                 ZStack {
                     Rectangle().opacity(0)
@@ -109,12 +110,12 @@ struct HomeScreenView: View {
                                 
                                 // Four Letters card
                                 GeometryReader { geo in
-                                    let shouldScaleDown = geo.frame(in: .global).midX - metrics.frame(in: .global).minX < 15 || metrics.frame(in: .global).maxX - geo.frame(in: .global).midX < 15
+                                    let shouldScaleDown = geo.frame(in: .global).minX - metrics.frame(in: .global).minX < 0 || metrics.frame(in: .global).maxX - geo.frame(in: .global).maxX < 0
                                     GameCardView(gameMode: 4, cardText: "Four Letters", cardWidth: cardWidth, fontSize: fontSize, cardBackgroundColor: fourGradient, detailView: AnyView(
                                         Text("4")
-                                            .font(AppFont.boldFont(fontSize: metrics.size.width / 8))
+                                            .font(AppFont.boldFont(fontSize: cardIconSize))
                                             .foregroundColor(.white)
-                                            .frame(width: metrics.size.width / 8, height: metrics.size.width / 8)
+                                            .frame(width: cardIconSize, height: cardIconSize)
                                             .padding()
                                     ), cardPressedFunc: {
                                         self.showCountries = false
@@ -131,12 +132,12 @@ struct HomeScreenView: View {
                                 
                                 // Five Letters card
                                 GeometryReader { geo in
-                                    let shouldScaleDown = geo.frame(in: .global).midX - metrics.frame(in: .global).minX < 15 || metrics.frame(in: .global).maxX - geo.frame(in: .global).midX < 15
+                                    let shouldScaleDown = geo.frame(in: .global).minX - metrics.frame(in: .global).minX < 0 || metrics.frame(in: .global).maxX - geo.frame(in: .global).maxX < 0
                                     GameCardView(gameMode: self.gameMode, cardText: "Five Letters", cardWidth: cardWidth, fontSize: fontSize, cardBackgroundColor: fiveGradient, detailView: AnyView(
                                         Text("5")
-                                            .font(AppFont.boldFont(fontSize: metrics.size.width / 8))
+                                            .font(AppFont.boldFont(fontSize: cardIconSize))
                                             .foregroundColor(.white)
-                                            .frame(width: metrics.size.width / 8, height: metrics.size.width / 8)
+                                            .frame(width: cardIconSize, height: cardIconSize)
                                             .padding()
                                     ), cardPressedFunc: {
                                         self.showCountries = false
@@ -154,12 +155,12 @@ struct HomeScreenView: View {
                                 
                                 // Six Letters card
                                 GeometryReader { geo in
-                                    let shouldScaleDown = geo.frame(in: .global).midX - metrics.frame(in: .global).minX < 15 || metrics.frame(in: .global).maxX - geo.frame(in: .global).midX < 15
+                                    let shouldScaleDown = geo.frame(in: .global).minX - metrics.frame(in: .global).minX < 0 || metrics.frame(in: .global).maxX - geo.frame(in: .global).maxX < 0
                                     GameCardView(gameMode: self.gameMode, cardText: "Six Letters", cardWidth: cardWidth, fontSize: fontSize, cardBackgroundColor: sixGradient, detailView: AnyView(
                                         Text("6")
-                                            .font(AppFont.boldFont(fontSize: metrics.size.width / 8))
+                                            .font(AppFont.boldFont(fontSize: cardIconSize))
                                             .foregroundColor(.white)
-                                            .frame(width: metrics.size.width / 8, height: metrics.size.width / 8)
+                                            .frame(width: cardIconSize, height: cardIconSize)
                                             .padding()
                                     ), cardPressedFunc: {
                                         self.showCountries = false
@@ -176,11 +177,13 @@ struct HomeScreenView: View {
                                 
                                 // Countries card
                                 GeometryReader { geo in
-                                    let shouldScaleDown = geo.frame(in: .global).midX - metrics.frame(in: .global).minX < 15 || metrics.frame(in: .global).maxX - geo.frame(in: .global).midX < 15
+                                    let shouldScaleDown = geo.frame(in: .global).minX - metrics.frame(in: .global).minX < 0 || metrics.frame(in: .global).maxX - geo.frame(in: .global).maxX < 0
                                     GameCardView(gameMode: self.gameMode, cardText: "Countries", cardWidth: cardWidth, fontSize: fontSize, cardBackgroundColor: countriesGradient, detailView: AnyView(
-                                        Image("earth")
+                                        Image(systemName: "globe.americas")
                                             .resizable()
-                                            .frame(width: metrics.size.width / 8, height: metrics.size.width / 8)
+                                            .foregroundColor(.white)
+                                            .font(.system(size: cardIconSize))
+                                            .frame(width: cardIconSize, height: cardIconSize)
                                             .padding()
                                     ), cardPressedFunc: {
                                         withAnimation(.default) {
