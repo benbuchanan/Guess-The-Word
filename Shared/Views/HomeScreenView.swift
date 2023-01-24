@@ -14,14 +14,16 @@ struct HomeScreenView: View {
     @Binding var showHome: Bool
     @Binding var gameMode: Int
     @Binding var showCountries: Bool
+    @Binding var showQuordle: Bool
     @State var showHelp: Bool = false
     @State var showSettings: Bool = false
     @State var colorBlindMode: Bool = UserDefaults.standard.bool(forKey: "colorBlindMode")
     
-    init(showHome: Binding<Bool>, gameMode: Binding<Int>, showCountries: Binding<Bool>) {
+    init(showHome: Binding<Bool>, gameMode: Binding<Int>, showCountries: Binding<Bool>, showQuordle: Binding<Bool>) {
         self._showHome = showHome
         self._gameMode = gameMode
         self._showCountries = showCountries
+        self._showQuordle = showQuordle
     }
     
     var body: some View {
@@ -76,27 +78,27 @@ struct HomeScreenView: View {
                     // TileViews to say wordguessr
                     VStack {
                         HStack {
-                            TileView(tile: LetterWithStatus(letter: "W", status: Status.incorrectPlacement), overrideColor: mainColor)
+                            TileView(tile: LetterWithStatus(letter: "W", status: Status.incorrectPlacement), font: .largeTitle, overrideColor: mainColor)
                                 .frame(width: metrics.size.width / 7.5, height: metrics.size.width / 7.5)
-                            TileView(tile: LetterWithStatus(letter: "O", status: Status.incorrectPlacement), overrideColor: mainColor)
+                            TileView(tile: LetterWithStatus(letter: "O", status: Status.incorrectPlacement), font: .largeTitle, overrideColor: mainColor)
                                 .frame(width: metrics.size.width / 7.5, height: metrics.size.width / 7.5)
-                            TileView(tile: LetterWithStatus(letter: "R", status: Status.incorrectPlacement), overrideColor: mainColor)
+                            TileView(tile: LetterWithStatus(letter: "R", status: Status.incorrectPlacement), font: .largeTitle, overrideColor: mainColor)
                                 .frame(width: metrics.size.width / 7.5, height: metrics.size.width / 7.5)
-                            TileView(tile: LetterWithStatus(letter: "D", status: Status.incorrectPlacement), overrideColor: mainColor)
+                            TileView(tile: LetterWithStatus(letter: "D", status: Status.incorrectPlacement), font: .largeTitle, overrideColor: mainColor)
                                 .frame(width: metrics.size.width / 7.5, height: metrics.size.width / 7.5)
                         }
                         HStack {
-                            TileView(tile: LetterWithStatus(letter: "G", status: Status.incorrectPlacement), overrideColor: mainColor)
+                            TileView(tile: LetterWithStatus(letter: "G", status: Status.incorrectPlacement), font: .largeTitle, overrideColor: mainColor)
                                 .frame(width: metrics.size.width / 7.5, height: metrics.size.width / 7.5)
-                            TileView(tile: LetterWithStatus(letter: "U", status: Status.incorrectPlacement), overrideColor: mainColor)
+                            TileView(tile: LetterWithStatus(letter: "U", status: Status.incorrectPlacement), font: .largeTitle, overrideColor: mainColor)
                                 .frame(width: metrics.size.width / 7.5, height: metrics.size.width / 7.5)
-                            TileView(tile: LetterWithStatus(letter: "E", status: Status.incorrectPlacement), overrideColor: mainColor)
+                            TileView(tile: LetterWithStatus(letter: "E", status: Status.incorrectPlacement), font: .largeTitle, overrideColor: mainColor)
                                 .frame(width: metrics.size.width / 7.5, height: metrics.size.width / 7.5)
-                            TileView(tile: LetterWithStatus(letter: "S", status: Status.incorrectPlacement), overrideColor: mainColor)
+                            TileView(tile: LetterWithStatus(letter: "S", status: Status.incorrectPlacement), font: .largeTitle, overrideColor: mainColor)
                                 .frame(width: metrics.size.width / 7.5, height: metrics.size.width / 7.5)
-                            TileView(tile: LetterWithStatus(letter: "S", status: Status.incorrectPlacement), overrideColor: mainColor)
+                            TileView(tile: LetterWithStatus(letter: "S", status: Status.incorrectPlacement), font: .largeTitle, overrideColor: mainColor)
                                 .frame(width: metrics.size.width / 7.5, height: metrics.size.width / 7.5)
-                            TileView(tile: LetterWithStatus(letter: "R", status: Status.incorrectPlacement), overrideColor: mainColor)
+                            TileView(tile: LetterWithStatus(letter: "R", status: Status.incorrectPlacement), font: .largeTitle, overrideColor: mainColor)
                                 .frame(width: metrics.size.width / 7.5, height: metrics.size.width / 7.5)
                         }
                     }
@@ -111,7 +113,7 @@ struct HomeScreenView: View {
                                 // Four Letters card
                                 GeometryReader { geo in
                                     let shouldScaleDown = geo.frame(in: .global).minX - metrics.frame(in: .global).minX < 0 || metrics.frame(in: .global).maxX - geo.frame(in: .global).maxX < 0
-                                    GameCardView(gameMode: 4, cardText: "Four Letters", cardWidth: cardWidth, fontSize: fontSize, cardBackgroundColor: fourGradient, detailView: AnyView(
+                                    GameCardView(cardText: "Four Letters", cardWidth: cardWidth, fontSize: fontSize, cardBackgroundColor: fourGradient, detailView: AnyView(
                                         Text("4")
                                             .font(AppFont.boldFont(fontSize: cardIconSize))
                                             .foregroundColor(.white)
@@ -133,7 +135,7 @@ struct HomeScreenView: View {
                                 // Five Letters card
                                 GeometryReader { geo in
                                     let shouldScaleDown = geo.frame(in: .global).minX - metrics.frame(in: .global).minX < 0 || metrics.frame(in: .global).maxX - geo.frame(in: .global).maxX < 0
-                                    GameCardView(gameMode: self.gameMode, cardText: "Five Letters", cardWidth: cardWidth, fontSize: fontSize, cardBackgroundColor: fiveGradient, detailView: AnyView(
+                                    GameCardView(cardText: "Five Letters", cardWidth: cardWidth, fontSize: fontSize, cardBackgroundColor: fiveGradient, detailView: AnyView(
                                         Text("5")
                                             .font(AppFont.boldFont(fontSize: cardIconSize))
                                             .foregroundColor(.white)
@@ -156,7 +158,7 @@ struct HomeScreenView: View {
                                 // Six Letters card
                                 GeometryReader { geo in
                                     let shouldScaleDown = geo.frame(in: .global).minX - metrics.frame(in: .global).minX < 0 || metrics.frame(in: .global).maxX - geo.frame(in: .global).maxX < 0
-                                    GameCardView(gameMode: self.gameMode, cardText: "Six Letters", cardWidth: cardWidth, fontSize: fontSize, cardBackgroundColor: sixGradient, detailView: AnyView(
+                                    GameCardView(cardText: "Six Letters", cardWidth: cardWidth, fontSize: fontSize, cardBackgroundColor: sixGradient, detailView: AnyView(
                                         Text("6")
                                             .font(AppFont.boldFont(fontSize: cardIconSize))
                                             .foregroundColor(.white)
@@ -178,7 +180,7 @@ struct HomeScreenView: View {
                                 // Countries card
                                 GeometryReader { geo in
                                     let shouldScaleDown = geo.frame(in: .global).minX - metrics.frame(in: .global).minX < 0 || metrics.frame(in: .global).maxX - geo.frame(in: .global).maxX < 0
-                                    GameCardView(gameMode: self.gameMode, cardText: "Countries", cardWidth: cardWidth, fontSize: fontSize, cardBackgroundColor: countriesGradient, detailView: AnyView(
+                                    GameCardView(cardText: "Countries", cardWidth: cardWidth, fontSize: fontSize, cardBackgroundColor: countriesGradient, detailView: AnyView(
                                         Image(systemName: "globe.americas")
                                             .resizable()
                                             .foregroundColor(.white)
@@ -189,6 +191,28 @@ struct HomeScreenView: View {
                                         withAnimation(.default) {
                                             self.showHome = false
                                             self.showCountries = true
+                                        }
+                                    })
+                                    .id(3)
+                                    .scaleEffect(x: 1, y: shouldScaleDown ? 0.9 : 1)
+                                    .shadow(color: colorScheme == .dark ? Color(.systemGray4) : Color(.lightGray), radius: !shouldScaleDown ? 20 : 0, x: 0, y: !shouldScaleDown ? 10 : 0)
+                                    .animation(.easeInOut(duration: 0.25), value: shouldScaleDown)
+                                }.frame(width: cardWidth)
+                                
+                                // Quordle card
+                                GeometryReader { geo in
+                                    let shouldScaleDown = geo.frame(in: .global).minX - metrics.frame(in: .global).minX < 0 || metrics.frame(in: .global).maxX - geo.frame(in: .global).maxX < 0
+                                    GameCardView(cardText: "Quordle", cardWidth: cardWidth, fontSize: fontSize, cardBackgroundColor: quordleGradient, detailView: AnyView(
+                                        Image(systemName: "square.grid.2x2")
+                                            .resizable()
+                                            .foregroundColor(.white)
+                                            .font(.system(size: cardIconSize))
+                                            .frame(width: cardIconSize, height: cardIconSize)
+                                            .padding()
+                                    ), cardPressedFunc: {
+                                        withAnimation(.default) {
+                                            self.showHome = false
+                                            self.showQuordle = true
                                         }
                                     })
                                     .id(3)
@@ -222,7 +246,6 @@ struct HomeScreenView: View {
 
 struct GameCardView: View {
     
-    @State var gameMode: Int
     @State var cardText: String
     @State var cardWidth: CGFloat
     @State var fontSize: CGFloat
@@ -315,15 +338,15 @@ struct HelpView: View {
                                     
                                     VStack(alignment: .center) {
                                         HStack {
-                                            TileView(tile: LetterWithStatus(letter: "R", status: Status.correct))
+                                            TileView(tile: LetterWithStatus(letter: "R", status: Status.correct), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                            TileView(tile: LetterWithStatus(letter: "O", status: Status.normal))
+                                            TileView(tile: LetterWithStatus(letter: "O", status: Status.normal), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                            TileView(tile: LetterWithStatus(letter: "U", status: Status.normal))
+                                            TileView(tile: LetterWithStatus(letter: "U", status: Status.normal), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                            TileView(tile: LetterWithStatus(letter: "T", status: Status.normal))
+                                            TileView(tile: LetterWithStatus(letter: "T", status: Status.normal), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                            TileView(tile: LetterWithStatus(letter: "E", status: Status.normal))
+                                            TileView(tile: LetterWithStatus(letter: "E", status: Status.normal), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
                                             
                                         }
@@ -334,15 +357,15 @@ struct HelpView: View {
                                     
                                     VStack(alignment: .center) {
                                         HStack {
-                                            TileView(tile: LetterWithStatus(letter: "P", status: Status.normal))
+                                            TileView(tile: LetterWithStatus(letter: "P", status: Status.normal), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                            TileView(tile: LetterWithStatus(letter: "L", status: Status.incorrectPlacement))
+                                            TileView(tile: LetterWithStatus(letter: "L", status: Status.incorrectPlacement), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                            TileView(tile: LetterWithStatus(letter: "A", status: Status.normal))
+                                            TileView(tile: LetterWithStatus(letter: "A", status: Status.normal), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                            TileView(tile: LetterWithStatus(letter: "C", status: Status.normal))
+                                            TileView(tile: LetterWithStatus(letter: "C", status: Status.normal), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                            TileView(tile: LetterWithStatus(letter: "E", status: Status.normal))
+                                            TileView(tile: LetterWithStatus(letter: "E", status: Status.normal), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
                                             
                                         }
@@ -353,15 +376,15 @@ struct HelpView: View {
                                     
                                     VStack(alignment: .center) {
                                         HStack {
-                                            TileView(tile: LetterWithStatus(letter: "M", status: Status.normal))
+                                            TileView(tile: LetterWithStatus(letter: "M", status: Status.normal), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                            TileView(tile: LetterWithStatus(letter: "E", status: Status.normal))
+                                            TileView(tile: LetterWithStatus(letter: "E", status: Status.normal), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                            TileView(tile: LetterWithStatus(letter: "A", status: Status.incorrect))
+                                            TileView(tile: LetterWithStatus(letter: "A", status: Status.incorrect), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                            TileView(tile: LetterWithStatus(letter: "N", status: Status.normal))
+                                            TileView(tile: LetterWithStatus(letter: "N", status: Status.normal), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
-                                            TileView(tile: LetterWithStatus(letter: "S", status: Status.normal))
+                                            TileView(tile: LetterWithStatus(letter: "S", status: Status.normal), font: .largeTitle)
                                                 .frame(width: metrics.size.width / 7, height: metrics.size.width / 7)
                                             
                                         }
@@ -550,6 +573,6 @@ struct SettingsView: View {
 
 struct HomeScreenView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeScreenView(showHome: .constant(true), gameMode: .constant(5), showCountries: .constant(false))
+        HomeScreenView(showHome: .constant(true), gameMode: .constant(5), showCountries: .constant(false), showQuordle: .constant(false))
     }
 }

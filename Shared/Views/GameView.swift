@@ -113,7 +113,7 @@ struct GameView: View {
                                     Spacer()
                                     HStack(spacing: 5) {
                                         ForEach(0...self.wordLength - 1, id: \.self) { j in
-                                            TileView(tile: self.guesses[i][j])
+                                            TileView(tile: self.guesses[i][j], font: .largeTitle)
                                                 .frame(width: min(gtest.size.height / 6.5, gtest.size.width / CGFloat(self.wordLength + 1)), height: min(gtest.size.height / 6.5, gtest.size.width / CGFloat(self.wordLength + 1)))
                                         }
                                     }

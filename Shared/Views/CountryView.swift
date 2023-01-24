@@ -11,9 +11,6 @@ struct CountryView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
-    // TODO: add backspace button to delete entire guess on text field
-    // Use hstack
-    
     @Binding var showHome: Bool
     @State var randomCountry: Country
     @State var guess: String = ""

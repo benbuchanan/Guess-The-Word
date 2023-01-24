@@ -11,6 +11,7 @@ struct TileView: View {
     @Environment(\.colorScheme) var colorScheme
     
     var tile: LetterWithStatus
+    var font: Font
     var overrideColor: Color? = nil
     var colorBlindMode = UserDefaults.standard.bool(forKey: "colorBlindMode")
     var tileColor: Color {
@@ -34,7 +35,7 @@ struct TileView: View {
                 .rotation3DEffect(Angle(degrees: tile.flipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
             Text(tile.letter)
                 .foregroundColor(tile.invalid ? Color.red : tile.status != Status.normal ? .white : colorScheme == .dark ? .white : .black)
-                .font(.largeTitle)
+                .font(self.font)
                 .fontWeight(.bold)
                 .animation(.none)
         }

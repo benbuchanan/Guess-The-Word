@@ -21,6 +21,7 @@ struct ContentView: View {
     // Increment on 'Enter'
     @State var showHome: Bool = true
     @State var showCountries: Bool = false
+    @State var showQuordle: Bool = false
     @State var gameMode: Int = 5
     
     init() {
@@ -29,9 +30,11 @@ struct ContentView: View {
         
     var body: some View {
         if self.showHome {
-            HomeScreenView(showHome: $showHome, gameMode: $gameMode, showCountries: $showCountries)
+            HomeScreenView(showHome: $showHome, gameMode: $gameMode, showCountries: $showCountries, showQuordle: $showQuordle)
         } else if showCountries {
             CountryView(showHome: $showHome)
+        } else if showQuordle {
+            QuordleView(showHome: $showHome, wordLength: 5)
         } else {
             GameView(showHome: $showHome, wordLength: self.gameMode)
         }
